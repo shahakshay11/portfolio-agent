@@ -1,0 +1,33 @@
+node_modules
+npm-debug.log
+.npm
+.env
+.env.local
+.env.*.local
+.git
+.gitignore
+README.md
+.DS_Store
+.nyc_output
+coverage
+.cache
+dist
+build
+
+# Keep reports directory structure but ignore content
+reports/*.html
+reports/*.md
+reports/*.png
+reports/screenshots/*
+
+# Ignore vercel-specific files
+vercel.json
+.vercel
+
+# Ignore development files
+tailwind.config.js
+public/input.css
+
+# Ignore local testing
+test-results/
+playwright-report/

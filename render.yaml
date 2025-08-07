@@ -1,15 +1,13 @@
 services:
   - type: web
     name: portfolio-agent
-    runtime: node
+    runtime: docker
     plan: free
     rootDir: .
-    buildCommand: npm install && npx playwright install-deps && npx playwright install chromium && echo "=== Playwright Installation ===" && npx playwright --version && echo "=== Browser Check ===" && ls -la /opt/render/.cache/ms-playwright/ && echo "=== Build directory structure ===" && pwd && ls -la && echo "=== Finished build ==="
-    startCommand: npm start
+    autoDeploy: true
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
       - key: RENDER
         value: "true"
-    autoDeploy: true
-    healthCheckPath: /api/health
