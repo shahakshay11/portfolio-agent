@@ -161,17 +161,22 @@ app.post('/api/analyze', async (req, res) => {
         if (code === 0) {
           analysis.status = 'completed';
           
-          // Extract report paths from output
+          // Extract report paths from output (support both full and simplified analysis)
           const spaMatch = outputBuffer.match(/🎨 SPA Report: (.+)/);
           const mainMatch = outputBuffer.match(/📄 Main report: (.+)/);
           const indexMatch = outputBuffer.match(/📊 Index report: (.+)/);
+          const simplifiedMatch = outputBuffer.match(/📄 Simplified report generated: (.+)/);
+          const reportAccessMatch = outputBuffer.match(/🌐 Access your report at: (.+)/);
           
           analysis.results = {
             spaReport: spaMatch ? spaMatch[1] : null,
             mainReport: mainMatch ? mainMatch[1] : null,
             indexReport: indexMatch ? indexMatch[1] : null,
+            simplifiedReport: simplifiedMatch ? simplifiedMatch[1] : null,
+            reportUrl: reportAccessMatch ? reportAccessMatch[1] : null,
             output: outputBuffer,
-            exitCode: code
+            exitCode: code,
+            isSimplified: outputBuffer.includes('Detected serverless environment')
           };
         } else {
           analysis.status = 'failed';
