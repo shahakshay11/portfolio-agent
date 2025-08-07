@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: portfolio-agent
+    env: node
+    plan: free
+    buildCommand: npm install && npx playwright install --with-deps chromium
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        fromService: 
+          type: web
+          name: portfolio-agent
+          property: port
+    autoDeploy: true
+    healthCheckPath: /api/health

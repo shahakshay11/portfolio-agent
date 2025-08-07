@@ -175,8 +175,8 @@ async function main() {
   console.log('');
 
   try {
-    // Check if we're in a serverless environment (like Vercel)
-    const isServerless = process.env.VERCEL || process.env.LAMBDA_RUNTIME_DIR || !require('fs').existsSync(require('path').join(process.cwd(), 'node_modules', '@playwright'));
+    // Check if we're in a serverless environment (like Vercel) but allow Render to use full analysis
+    const isServerless = (process.env.VERCEL || process.env.LAMBDA_RUNTIME_DIR) && !process.env.RENDER;
     
     if (isServerless) {
       console.log('🌐 Detected serverless environment - using simplified analysis mode');
