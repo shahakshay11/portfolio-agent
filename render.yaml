@@ -4,7 +4,7 @@ services:
     runtime: node
     plan: free
     rootDir: .
-    buildCommand: npm install && npx playwright install --with-deps chromium && echo "=== Build directory structure ===" && pwd && ls -la && echo "=== Public directory ===" && ls -la public/ && echo "=== Finished build ==="
+    buildCommand: npm install && npx playwright install-deps && npx playwright install chromium && echo "=== Playwright Installation ===" && npx playwright --version && echo "=== Browser Check ===" && ls -la /opt/render/.cache/ms-playwright/ && echo "=== Build directory structure ===" && pwd && ls -la && echo "=== Finished build ==="
     startCommand: npm start
     envVars:
       - key: NODE_ENV

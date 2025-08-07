@@ -175,15 +175,15 @@ app.get('/', (req, res) => {
         <!-- Navigation Tabs -->
         <div style="margin-bottom: 2rem;">
             <div style="display: flex; flex-wrap: wrap; justify-content: center; background: rgba(255,255,255,0.6); backdrop-filter: blur(16px); border-radius: 1rem; padding: 0.5rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);">
-                <button onclick="showTab('analyze')" class="nav-tab active" style="display: flex; align-items: center; gap: 0.5rem;">
+                <button onclick="showTab('analyze', this)" class="nav-tab active" style="display: flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-play-circle"></i>
                     <span>Analyze Portfolio</span>
                 </button>
-                <button onclick="showTab('reports')" class="nav-tab" style="display: flex; align-items: center; gap: 0.5rem;">
+                <button onclick="showTab('reports', this)" class="nav-tab" style="display: flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-file-chart-pie"></i>
                     <span>View Reports</span>
                 </button>
-                <button onclick="showTab('status')" class="nav-tab" style="display: flex; align-items: center; gap: 0.5rem;">
+                <button onclick="showTab('status', this)" class="nav-tab" style="display: flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-heartbeat"></i>
                     <span>System Status</span>
                 </button>
@@ -280,7 +280,7 @@ app.get('/', (req, res) => {
         let eventSource = null;
 
         // Tab Management
-        function showTab(tabName) {
+        function showTab(tabName, targetElement) {
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
@@ -289,7 +289,7 @@ app.get('/', (req, res) => {
             });
             
             document.getElementById(tabName + '-tab').classList.add('active');
-            event.target.classList.add('active');
+            if (targetElement) targetElement.classList.add('active');
             
             if (tabName === 'reports') loadReports();
             if (tabName === 'status') loadSystemStatus();
@@ -332,7 +332,7 @@ app.get('/', (req, res) => {
                 if (response.ok) {
                     currentAnalysisId = result.analysisId;
                     startAnalysisMonitoring(result.analysisId);
-                    showTab('status');
+                    showTab('status', document.querySelector('button[onclick*="status"]'));
                     showAlert('Analysis started successfully!', 'success');
                 } else {
                     showAlert('Error: ' + result.error, 'error');
