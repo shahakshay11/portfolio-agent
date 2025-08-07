@@ -16,9 +16,42 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Ensure directories exist and serve static files
 // Handle different deployment environments (local vs Render)
-const baseDir = process.cwd(); // Use current working directory instead of __dirname
-const reportsDir = path.join(baseDir, 'reports');
-const publicDir = path.join(baseDir, 'public');
+// Try multiple possible locations for the files
+const possibleBaseDirs = [
+  __dirname,                    // Current directory (local)
+  process.cwd(),               // Process working directory  
+  path.dirname(__dirname),     // Parent directory (if server.js is in subdirectory)
+  '/opt/render/project/src',   // Render project root
+  '/opt/render/project'        // Render alternative
+];
+
+let baseDir = __dirname; // Default
+let publicDir = null;
+let reportsDir = null;
+
+// Find the correct base directory by checking where public folder exists
+for (const dir of possibleBaseDirs) {
+  const testPublicDir = path.join(dir, 'public');
+  const testIndexFile = path.join(testPublicDir, 'index.html');
+  
+  console.log(`Checking for public directory at: ${testPublicDir}`);
+  console.log(`Checking for index.html at: ${testIndexFile}`);
+  
+  if (fs.existsSync(testIndexFile)) {
+    baseDir = dir;
+    publicDir = testPublicDir;
+    reportsDir = path.join(dir, 'reports');
+    console.log(`✅ Found files! Using base directory: ${baseDir}`);
+    break;
+  }
+}
+
+// If we still haven't found the files, use defaults and log the issue
+if (!publicDir) {
+  publicDir = path.join(__dirname, 'public');
+  reportsDir = path.join(__dirname, 'reports');
+  console.log(`❌ Could not find public directory in any expected location`);
+}
 
 console.log('Server starting from __dirname:', __dirname);
 console.log('Process working directory:', process.cwd());
@@ -73,22 +106,47 @@ function getCategoryFromMessage(message) {
 // Routes
 app.get('/', (req, res) => {
   const indexPath = path.join(publicDir, 'index.html');
-  console.log('Looking for index.html at:', indexPath);
+  console.log('Serving index.html from:', indexPath);
   
   // Check if file exists before trying to send it
   if (fs.existsSync(indexPath)) {
     res.sendFile(indexPath);
   } else {
-    console.error('index.html not found at:', indexPath);
-    res.status(500).send(`
-      <h1>Portfolio Analyzer</h1>
-      <p>Error: Static files not found. Please check deployment configuration.</p>
-      <p>Looking for: ${indexPath}</p>
-      <p>__dirname: ${__dirname}</p>
-      <p>process.cwd(): ${process.cwd()}</p>
-      <p>publicDir: ${publicDir}</p>
-      <p>Base directory contents: ${fs.readdirSync(baseDir).join(', ')}</p>
-    `);
+    console.error('index.html STILL not found at:', indexPath);
+    
+    // Show comprehensive debugging info
+    let debugInfo = `
+      <h1>Portfolio Analyzer - Debug Info</h1>
+      <h2>Path Information:</h2>
+      <ul>
+        <li><strong>Looking for:</strong> ${indexPath}</li>
+        <li><strong>__dirname:</strong> ${__dirname}</li>
+        <li><strong>process.cwd():</strong> ${process.cwd()}</li>
+        <li><strong>Selected baseDir:</strong> ${baseDir}</li>
+        <li><strong>Selected publicDir:</strong> ${publicDir}</li>
+      </ul>
+      
+      <h2>Tested Locations:</h2>
+      <ul>`;
+    
+    // Show all tested locations
+    for (const dir of possibleBaseDirs) {
+      const testPath = path.join(dir, 'public', 'index.html');
+      const exists = fs.existsSync(testPath);
+      debugInfo += `<li><strong>${testPath}:</strong> ${exists ? '✅ EXISTS' : '❌ NOT FOUND'}</li>`;
+    }
+    
+    debugInfo += `
+      </ul>
+      
+      <h2>Directory Contents:</h2>
+      <ul>
+        <li><strong>baseDir contents:</strong> ${fs.existsSync(baseDir) ? fs.readdirSync(baseDir).join(', ') : 'Directory not accessible'}</li>
+        <li><strong>publicDir contents:</strong> ${fs.existsSync(publicDir) ? fs.readdirSync(publicDir).join(', ') : 'Directory not accessible'}</li>
+      </ul>
+    `;
+    
+    res.status(500).send(debugInfo);
   }
 });
 
