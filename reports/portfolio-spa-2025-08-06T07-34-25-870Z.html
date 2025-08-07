@@ -1,0 +1,2016 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Analysis - www.nicolearoberts.com</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .app {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+        }
+
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5em;
+        }
+
+        .logo h1 {
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .site-info h2 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .site-info a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+        }
+
+        .overall-score {
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .score-circle.excellent { background: linear-gradient(135deg, #4CAF50, #45a049); }
+        .score-circle.good { background: linear-gradient(135deg, #FF9800, #F57C00); }
+        .score-circle.needs-improvement { background: linear-gradient(135deg, #f44336, #d32f2f); }
+
+        .score-number {
+            font-size: 1.5em;
+        }
+
+        .score-label {
+            font-size: 0.8em;
+            opacity: 0.9;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        /* Navigation */
+        .nav {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            sticky: top 0;
+            z-index: 100;
+        }
+
+        .nav-content {
+            display: flex;
+            padding: 0 30px;
+            overflow-x: auto;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 15px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .nav-btn.active {
+            border-bottom-color: #667eea;
+            color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .badge {
+            background: #667eea;
+            color: white;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 0.8em;
+            margin-left: 5px;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 30px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+        }
+
+        .section-header h2 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .card-header h3 {
+            color: #333;
+            font-size: 1.2em;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        /* Grids */
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .case-studies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .recommendations-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        /* Score Card */
+        .score-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .score-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .score-card .score-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .score-card .score-title {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .score-card .score-description {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Case Study Card */
+        .case-study-card {
+            border-left: 4px solid #667eea;
+        }
+
+        .case-study-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .case-study-title {
+            font-size: 1.3em;
+            color: #333;
+        }
+
+        .case-study-scores {
+            display: flex;
+            gap: 15px;
+        }
+
+        .mini-score {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .mini-score-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .mini-score-label {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        .responsive-preview {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .device-preview {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .device-header {
+            background: #333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px 8px 0 0;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        .device-preview img {
+            width: 100%;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .empty-state ul {
+            text-align: left;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+
+            .header-main {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .header-stats {
+                justify-content: center;
+            }
+
+            .main {
+                padding: 20px;
+            }
+
+            .nav-content {
+                padding: 0 20px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .responsive-preview {
+                flex-direction: column;
+            }
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-main">
+                    <div class="logo">
+                        <i class="fas fa-chart-line"></i>
+                        <h1>Portfolio Analyzer</h1>
+                    </div>
+                    <div class="header-info">
+                        <div class="site-info">
+                            <h2>www.nicolearoberts.com</h2>
+                            <p><i class="fas fa-link"></i> <a href="https://www.nicolearoberts.com/" target="_blank">https://www.nicolearoberts.com/</a></p>
+                        </div>
+                        <div class="overall-score">
+                            <div class="score-circle excellent">
+                                <div class="score-number">82</div>
+                                <div class="score-label">Overall</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat">
+                        <i class="fas fa-desktop"></i>
+                        <span>Desktop & Mobile Tested</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-robot"></i>
+                        <span>AI Analyzed</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-book"></i>
+                        <span>6 Case Studies</span>
+                    </div>
+                    <div class="stat">
+                        <i class="far fa-clock"></i>
+                        <span>8/6/2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-content">
+                <button class="nav-btn active" onclick="showSection('overview')" data-section="overview">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Overview</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('homepage')" data-section="homepage">
+                    <i class="fas fa-home"></i>
+                    <span>Homepage</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('casestudies')" data-section="casestudies">
+                    <i class="fas fa-book-open"></i>
+                    <span>Case Studies</span>
+                    <span class="badge">6</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('ai-insights')" data-section="ai-insights">
+                    <i class="fas fa-brain"></i>
+                    <span>AI Insights</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('recommendations')" data-section="recommendations">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Recommendations</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('screenshots')" data-section="screenshots">
+                    <i class="fas fa-images"></i>
+                    <span>Screenshots</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Overview Section -->
+            <section id="overview" class="section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Performance Overview</h2>
+                    <p>Comprehensive analysis of www.nicolearoberts.com</p>
+                </div>
+                
+                <div class="score-grid">
+                    
+      <div class="score-card">
+        <div class="score-value" style="color: #4CAF50;">85</div>
+        <div class="score-title">Visual Design</div>
+        <div class="score-description">Clean, minimalist aesthetic that aligns with modern design trends</div>
+      </div>
+    
+      <div class="score-card">
+        <div class="score-value" style="color: #4CAF50;">80</div>
+        <div class="score-title">User Experience</div>
+        <div class="score-description">Clear information hierarchy</div>
+      </div>
+    
+      <div class="score-card">
+        <div class="score-value" style="color: #4CAF50;">88</div>
+        <div class="score-title">Layout Structure</div>
+        <div class="score-description">Excellent use of grid system</div>
+      </div>
+    
+                </div>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-pie"></i> Executive Summary</h3>
+                        </div>
+                        <div class="card-content">
+                            <p>The portfolio demonstrates a clean, minimalist design approach with strong typography hierarchy and thoughtful use of whitespace. The simple yet professional layout effectively communicates the designer's focus on product design, though there are opportunities to enhance visual engagement and navigation.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-trophy"></i> Key Strengths</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul><li>Clean, minimalist aesthetic that aligns with modern design trends</li><li>Excellent use of whitespace creating visual breathing room</li><li>Clear typographic hierarchy with well-chosen font pairings</li></ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Homepage Section -->
+            <section id="homepage" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-home"></i> Homepage Analysis</h2>
+                    <p>First impression and main page evaluation</p>
+                </div>
+                
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-eye"></i> Visual Design</h3>
+                        </div>
+                        <div class="card-content">
+                            
+      <div class="homepage-metrics">
+        <div style="display: grid; gap: 15px;">
+          <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+            <span>Visual Appeal</span>
+            <span style="color: #4CAF50; font-weight: bold;">Excellent</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+            <span>Content Clarity</span>
+            <span style="color: #4CAF50; font-weight: bold;">Good</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+            <span>Navigation</span>
+            <span style="color: #FF9800; font-weight: bold;">Needs Improvement</span>
+          </div>
+        </div>
+      </div>
+    
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-mobile-alt"></i> Responsive Design</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="responsive-preview">
+                                
+                                    <div class="device-preview desktop">
+                                        <div class="device-header">Desktop (1920x1080)</div>
+                                        <img src="reports/screenshots/screenshot-desktop-1754465508178.png" alt="Desktop screenshot">
+                                    </div>
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Case Studies Section -->
+            <section id="casestudies" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-book-open"></i> Case Studies Analysis</h2>
+                    <p>6 case studies found and analyzed</p>
+                </div>
+                
+                
+                    <!-- Case Study Navigation -->
+                    <div class="case-study-nav" style="margin-bottom: 30px;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            
+                                <button onclick="showCaseStudy(0)" class="case-nav-btn active" data-case="0" style="
+                                    padding: 10px 20px; 
+                                    border: 2px solid #667eea; 
+                                    background: #667eea; 
+                                    color: white; 
+                                    border-radius: 25px; 
+                                    cursor: pointer; 
+                                    font-weight: 500;
+                                    transition: all 0.3s ease;
+                                ">
+                                    Nicole Roberts | Empowering Item Discovery with Gen AI Summaries
+                                </button>
+                            
+                                <button onclick="showCaseStudy(1)" class="case-nav-btn " data-case="1" style="
+                                    padding: 10px 20px; 
+                                    border: 2px solid #667eea; 
+                                    background: white; 
+                                    color: #667eea; 
+                                    border-radius: 25px; 
+                                    cursor: pointer; 
+                                    font-weight: 500;
+                                    transition: all 0.3s ease;
+                                ">
+                                    Nicole Roberts | Creating a Reviewer Profile to Drive Engagement and Impact
+                                </button>
+                            
+                                <button onclick="showCaseStudy(2)" class="case-nav-btn " data-case="2" style="
+                                    padding: 10px 20px; 
+                                    border: 2px solid #667eea; 
+                                    background: white; 
+                                    color: #667eea; 
+                                    border-radius: 25px; 
+                                    cursor: pointer; 
+                                    font-weight: 500;
+                                    transition: all 0.3s ease;
+                                ">
+                                    Nicole Roberts | Optimizing User Feedback with a Scalable Review Template
+                                </button>
+                            
+                                <button onclick="showCaseStudy(3)" class="case-nav-btn " data-case="3" style="
+                                    padding: 10px 20px; 
+                                    border: 2px solid #667eea; 
+                                    background: white; 
+                                    color: #667eea; 
+                                    border-radius: 25px; 
+                                    cursor: pointer; 
+                                    font-weight: 500;
+                                    transition: all 0.3s ease;
+                                ">
+                                    arrow_forward View Live (In App)
+                                </button>
+                            
+                                <button onclick="showCaseStudy(4)" class="case-nav-btn " data-case="4" style="
+                                    padding: 10px 20px; 
+                                    border: 2px solid #667eea; 
+                                    background: white; 
+                                    color: #667eea; 
+                                    border-radius: 25px; 
+                                    cursor: pointer; 
+                                    font-weight: 500;
+                                    transition: all 0.3s ease;
+                                ">
+                                    arrow_forwardView live
+                                </button>
+                            
+                                <button onclick="showCaseStudy(5)" class="case-nav-btn " data-case="5" style="
+                                    padding: 10px 20px; 
+                                    border: 2px solid #667eea; 
+                                    background: white; 
+                                    color: #667eea; 
+                                    border-radius: 25px; 
+                                    cursor: pointer; 
+                                    font-weight: 500;
+                                    transition: all 0.3s ease;
+                                ">
+                                    arrow_forwardView live
+                                </button>
+                            
+                        </div>
+                    </div>
+
+                    <!-- Individual Case Study Sections -->
+                    
+      <div class="case-study-section active" id="case-study-0" style="display: block;">
+        <div class="case-study-header-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+              <h2 style="font-size: 2.5em; margin-bottom: 15px; color: white;">Nicole Roberts | Empowering Item Discovery with Gen AI Summaries</h2>
+              <p style="font-size: 1.1em; opacity: 0.9; margin-bottom: 10px;">
+                <i class="fas fa-link"></i> 
+                <a href="https://www.nicolearoberts.com/case-studies/empowering-item-discovery-with-gen-ai-summaries" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;">
+                  https://www.nicolearoberts.com/case-studies/empowering-item-discovery-with-gen-ai-summaries
+                </a>
+              </p>
+              <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-file-alt"></i> 1793 words
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-images"></i> 44 images
+                </div>
+              </div>
+            </div>
+            
+            
+              <div style="text-align: center;">
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; min-width: 120px;">
+                  <div style="font-size: 3em; font-weight: bold; color: white; margin-bottom: 5px;">
+                    90
+                  </div>
+                  <div style="opacity: 0.9;">AI Overall Score</div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        
+          <!-- AI Analysis Grid -->
+          <div class="ai-analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            <!-- Project Overview -->
+            
+              <div class="analysis-card" style="background: #f8faff; border-left: 5px solid #667eea; padding: 25px; border-radius: 10px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.3em;">
+                  <i class="fas fa-project-diagram"></i> Project Overview
+                </h3>
+                <p style="line-height: 1.6; color: #333;">This project focuses on implementing AI-generated summaries for Walmart's e-commerce platform to help users make faster, more informed purchase decisions. The solution addresses decision fatigue and information overload through smart item and review summaries.
+
+2. **</p>
+              </div>
+            
+
+            <!-- Scoring Breakdown -->
+            <div class="scoring-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-chart-line"></i> AI Assessment Scores
+              </h3>
+              <div style="display: grid; gap: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0f9ff; border-radius: 8px;">
+                  <span style="font-weight: 500;">Storytelling</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #0369a1;">
+                    90/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0fdf4; border-radius: 8px;">
+                  <span style="font-weight: 500;">Visual Design</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #059669;">
+                    92/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fef3c7; border-radius: 8px;">
+                  <span style="font-weight: 500;">Content Strategy</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #d97706;">
+                    88/100
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Insights Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            
+              <div class="insights-card" style="background: #f0fdf4; border-radius: 10px; padding: 25px; border-left: 5px solid #10b981;">
+                <h3 style="color: #059669; margin-bottom: 20px; font-size: 1.3em;">
+                  <i class="fas fa-thumbs-up"></i> Key Strengths
+                </h3>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      Excellent visualization of the solution through high-fidelity mockups
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      Clear metrics and business impact
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      Strong documentation of iterations
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      Effective use of competitive analysis
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      Clear presentation of user insights
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      **
+                    </li>
+                  
+                </ul>
+              </div>
+            
+
+            
+              <div class="insights-card" style="background: #fef2f2; border-radius: 10px; padding: 25px; border-left: 5px solid #ef4444;">
+                <h3 style="color: #dc2626; margin-bottom: 20px; font-size: 1.3em;">
+                  <i class="fas fa-arrow-up"></i> Areas for Improvement
+                </h3>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      Could provide more detail about user research methodology
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      Impact metrics could use more context and benchmarking
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      Personal contribution could be more clearly defined
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      More detail about technical constraints and solutions
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      **
+                    </li>
+                  
+                </ul>
+              </div>
+            
+          </div>
+
+          
+            <!-- Actionable Recommendations -->
+            <div class="recommendations-section" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 30px;">
+              <h3 style="color: #667eea; margin-bottom: 25px; font-size: 1.4em;">
+                <i class="fas fa-lightbulb"></i> Actionable Recommendations
+              </h3>
+              <div style="display: grid; gap: 20px;">
+                
+                  <div style="background: #f8f9ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px;">
+                    <div style="display: flex; align-items: flex-start; gap: 15px;">
+                      <div style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">
+                        1
+                      </div>
+                      <div style="flex: 1;">
+                        <p style="margin: 0; line-height: 1.6; font-weight: 500;">Add a dedicated section about research methodology and participants</p>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div style="background: #f8f9ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px;">
+                    <div style="display: flex; align-items: flex-start; gap: 15px;">
+                      <div style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">
+                        2
+                      </div>
+                      <div style="flex: 1;">
+                        <p style="margin: 0; line-height: 1.6; font-weight: 500;">Include more specific details about personal role and contribution</p>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div style="background: #f8f9ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px;">
+                    <div style="display: flex; align-items: flex-start; gap: 15px;">
+                      <div style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">
+                        3
+                      </div>
+                      <div style="flex: 1;">
+                        <p style="margin: 0; line-height: 1.6; font-weight: 500;">Expand on the technical challenges and solutions in implementing AI</p>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div style="background: #f8f9ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px;">
+                    <div style="display: flex; align-items: flex-start; gap: 15px;">
+                      <div style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">
+                        4
+                      </div>
+                      <div style="flex: 1;">
+                        <p style="margin: 0; line-height: 1.6; font-weight: 500;">**</p>
+                      </div>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          
+
+          
+            <!-- Competitive Analysis -->
+            <div class="competitive-section" style="background: #faf5ff; border-radius: 10px; padding: 25px; margin-bottom: 30px; border-left: 5px solid #8b5cf6;">
+              <h3 style="color: #8b5cf6; margin-bottom: 15px; font-size: 1.3em;">
+                <i class="fas fa-chart-bar"></i> Competitive Analysis
+              </h3>
+              <p style="line-height: 1.6; color: #333;">- Could provide more detail about user research methodology
+- Impact metrics could use more context and benchmarking
+- Personal contribution could be more clearly defined
+- More detail about technical constraints and solutions
+
+7. **Actionable Recommendations**:
+1. Add a dedicated section about research methodology and participants
+2. Include more specific details about personal role and contribution
+3. Expand on the technical challenges and solutions in implementing AI
+
+8. **Competitive Analysis**:
+This case study is above average compared to industry standards, particularly in its visual presentation and documentation of the iterative process. It stands out for its clear presentation of AI implementation in e-commerce.
+
+9. **</p>
+            </div>
+          
+
+          
+            <!-- Overall Assessment -->
+            <div class="assessment-section" style="background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); border-radius: 15px; padding: 30px; margin-bottom: 30px; border: 1px solid #e5e7eb;">
+              <h3 style="color: #1f2937; margin-bottom: 20px; font-size: 1.4em;">
+                <i class="fas fa-clipboard-check"></i> AI Overall Assessment
+              </h3>
+              <div style="background: white; padding: 25px; border-radius: 10px; border-left: 4px solid #6b7280;">
+                <p style="line-height: 1.6; margin: 0; color: #374151; font-size: 1.1em;">90/100
+This is a strong case study that effectively demonstrates the designer's ability to tackle complex problems and implement innovative solutions. The presentation is professional, and the narrative is clear and engaging.
+
+The case study particularly excels in showing the evolution of the solution through multiple iterations and clearly presenting the final implementation. The integration of AI technology is well-explained and the business impact is clearly demonstrated through metrics.</p>
+              </div>
+            </div>
+          
+
+          
+            <!-- Raw AI Analysis -->
+            <div class="raw-ai-section" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 30px;">
+              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #667eea; font-size: 1.4em;">
+                  <i class="fas fa-robot"></i> Complete AI Analysis
+                </h3>
+                <button onclick="toggleRawAnalysis(0)" style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                  <i class="fas fa-eye"></i> View Full Analysis
+                </button>
+              </div>
+              <div id="raw-analysis-0" style="display: none;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #667eea; font-family: monospace; white-space: pre-wrap; max-height: 500px; overflow-y: auto; line-height: 1.5;">
+                  Based on the provided case study, here's a detailed analysis:
+
+1. **Project Overview**:
+This project focuses on implementing AI-generated summaries for Walmart's e-commerce platform to help users make faster, more informed purchase decisions. The solution addresses decision fatigue and information overload through smart item and review summaries.
+
+2. **Storytelling Assessment**:
+- Problem Definition: 90/100 - Clearly articulates both business and user needs
+- Process Documentation: 85/100 - Well-documented iterations and testing phases
+- Solution Presentation: 95/100 - Excellent visualization of the final solution
+- Impact Measurement: 85/100 - Good metrics but could use more context
+- Personal Growth: 80/100 - Includes learnings but could be more detailed
+
+3. **Visual Design Quality**: 92/100
+- Layout and hierarchy: Excellent use of space and visual organization
+- Visual consistency: Strong brand alignment and systematic design
+- Use of imagery: High-quality mockups and clear process documentation
+- Typography: Clean and professional
+- Professional presentation: Polished and refined
+
+4. **Content Strategy**: 88/100
+- Clarity: Direct and well-structured
+- Detail level: Appropriate balance of high-level and detailed information
+- Flow: Logical progression from problem to solution
+- Voice: Professional yet accessible
+- Technical depth: Good balance of UX concepts and business impact
+
+5. **Specific Strengths**:
+- Excellent visualization of the solution through high-fidelity mockups
+- Clear metrics and business impact
+- Strong documentation of iterations
+- Effective use of competitive analysis
+- Clear presentation of user insights
+
+6. **Areas for Improvement**:
+- Could provide more detail about user research methodology
+- Impact metrics could use more context and benchmarking
+- Personal contribution could be more clearly defined
+- More detail about technical constraints and solutions
+
+7. **Actionable Recommendations**:
+1. Add a dedicated section about research methodology and participants
+2. Include more specific details about personal role and contribution
+3. Expand on the technical challenges and solutions in implementing AI
+
+8. **Competitive Analysis**:
+This case study is above average compared to industry standards, particularly in its visual presentation and documentation of the iterative process. It stands out for its clear presentation of AI implementation in e-commerce.
+
+9. **Overall Assessment**: 90/100
+This is a strong case study that effectively demonstrates the designer's ability to tackle complex problems and implement innovative solutions. The presentation is professional, and the narrative is clear and engaging.
+
+The case study particularly excels in showing the evolution of the solution through multiple iterations and clearly presenting the final implementation. The integration of AI technology is well-explained and the business impact is clearly demonstrated through metrics.
+                </div>
+              </div>
+            </div>
+          
+        
+
+        <!-- Technical Analysis & Screenshot -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
+          
+          <!-- Technical Analysis -->
+          <div class="technical-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+              <i class="fas fa-cogs"></i> Technical Analysis
+            </h3>
+            <div style="display: grid; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Problem Statement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Process Documentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Solution Presentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Impact Measurement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+            </div>
+          </div>
+
+          
+            <!-- Screenshot -->
+            <div class="screenshot-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-camera"></i> Case Study Screenshot
+              </h3>
+              <img src="reports/screenshots/case-study-1754465543529.png" style="width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" alt="Case study screenshot">
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="case-study-section " id="case-study-1" style="display: none;">
+        <div class="case-study-header-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+              <h2 style="font-size: 2.5em; margin-bottom: 15px; color: white;">Nicole Roberts | Creating a Reviewer Profile to Drive Engagement and Impact</h2>
+              <p style="font-size: 1.1em; opacity: 0.9; margin-bottom: 10px;">
+                <i class="fas fa-link"></i> 
+                <a href="https://www.nicolearoberts.com/case-studies/creating-a-reviewer-profile-to-drive-engagement-and-impact" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;">
+                  https://www.nicolearoberts.com/case-studies/creating-a-reviewer-profile-to-drive-engagement-and-impact
+                </a>
+              </p>
+              <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-file-alt"></i> 2002 words
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-images"></i> 60 images
+                </div>
+              </div>
+            </div>
+            
+            
+              <div style="text-align: center;">
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; min-width: 120px;">
+                  <div style="font-size: 3em; font-weight: bold; color: white; margin-bottom: 5px;">
+                    85
+                  </div>
+                  <div style="opacity: 0.9;">AI Overall Score</div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        
+          <!-- AI Analysis Grid -->
+          <div class="ai-analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            <!-- Project Overview -->
+            
+              <div class="analysis-card" style="background: #f8faff; border-left: 5px solid #667eea; padding: 25px; border-radius: 10px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.3em;">
+                  <i class="fas fa-project-diagram"></i> AI Analysis Status
+                </h3>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.2em;"></i>
+                  <span style="color: #333;">AI analysis completed - Individual case study insights processed</span>
+                </div>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                  Detailed insights including project overview, strengths, improvements, and recommendations are available in the raw AI analysis.
+                </p>
+              </div>
+            
+
+            <!-- Scoring Breakdown -->
+            <div class="scoring-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-chart-line"></i> AI Assessment Scores
+              </h3>
+              <div style="display: grid; gap: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0f9ff; border-radius: 8px;">
+                  <span style="font-weight: 500;">Storytelling</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #0369a1;">
+                    90/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0fdf4; border-radius: 8px;">
+                  <span style="font-weight: 500;">Visual Design</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #059669;">
+                    85/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fef3c7; border-radius: 8px;">
+                  <span style="font-weight: 500;">Content Strategy</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #d97706;">
+                    85/100
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Insights Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            
+
+            
+          </div>
+
+          
+
+          
+
+          
+            <!-- Overall Assessment -->
+            <div class="assessment-section" style="background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); border-radius: 15px; padding: 30px; margin-bottom: 30px; border: 1px solid #e5e7eb;">
+              <h3 style="color: #1f2937; margin-bottom: 20px; font-size: 1.4em;">
+                <i class="fas fa-clipboard-check"></i> AI Overall Assessment
+              </h3>
+              <div style="background: white; padding: 25px; border-radius: 10px; border-left: 4px solid #6b7280;">
+                <p style="line-height: 1.6; margin: 0; color: #374151; font-size: 1.1em;">85/100
+A strong case study that effectively communicates a complex product feature development process. The combination of clear problem definition, comprehensive process documentation, and thoughtful solution presentation makes this a compelling portfolio piece.
+
+The case study successfully demonstrates the designer's ability to handle complex enterprise UX challenges while maintaining focus on user needs and business goals. The systematic approach to problem-solving and clear documentation of the process makes this a valuable portfolio piece.</p>
+              </div>
+            </div>
+          
+
+          
+            <!-- Raw AI Analysis -->
+            <div class="raw-ai-section" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 30px;">
+              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #667eea; font-size: 1.4em;">
+                  <i class="fas fa-robot"></i> Complete AI Analysis
+                </h3>
+                <button onclick="toggleRawAnalysis(1)" style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                  <i class="fas fa-eye"></i> View Full Analysis
+                </button>
+              </div>
+              <div id="raw-analysis-1" style="display: none;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #667eea; font-family: monospace; white-space: pre-wrap; max-height: 500px; overflow-y: auto; line-height: 1.5;">
+                  Based on the provided case study information and image, I'll provide a comprehensive analysis:
+
+1. **Project Overview**
+This project focuses on creating a Reviewer Profile system for Walmart to increase user engagement in product reviews. The main challenge was addressing lower-than-industry-standard reviewer participation rates by improving recognition and discoverability of the review system.
+
+2. **Storytelling Assessment**
+- Problem Definition: 90/100 - Clearly articulated business and user problems
+- Process Documentation: 85/100 - Well-documented methodology and decision-making
+- Solution Presentation: 85/100 - Comprehensive showcase of the final solution
+- Impact Measurement: 75/100 - Could include more specific metrics
+- Personal Growth: 80/100 - Good reflection on learnings
+
+3. **Visual Design Quality**
+- Layout and hierarchy: 85/100
+- Visual consistency: 90/100
+- Use of imagery and mockups: 85/100
+- Typography and readability: 80/100
+- Professional presentation: 85/100
+
+4. **Content Strategy**
+- Clarity of communication: 85/100
+- Appropriate level of detail: 80/100
+- Logical flow and structure: 85/100
+- Engaging narrative voice: 75/100
+- Technical depth vs accessibility: 80/100
+
+5. **Specific Strengths**
+- Comprehensive competitive analysis
+- Clear problem statement and business context
+- Strong documentation of the design process
+- Effective use of user quotes and feedback
+- Well-structured presentation of the solution
+
+6. **Areas for Improvement**
+- Could include more quantitative data
+- Impact metrics could be more detailed
+- User research insights could be expanded
+- Visual hierarchy could be enhanced
+- More emphasis on key decisions and trade-offs
+
+7. **Actionable Recommendations**
+1. Add more specific metrics and KPIs to demonstrate impact
+2. Include more detailed user research findings
+3. Enhance visual hierarchy with stronger section breaks
+
+8. **Competitive Analysis**
+This case study is on par with industry standards, particularly strong in process documentation and solution presentation. It compares favorably with other enterprise UX case studies.
+
+9. **Overall Assessment**: 85/100
+A strong case study that effectively communicates a complex product feature development process. The combination of clear problem definition, comprehensive process documentation, and thoughtful solution presentation makes this a compelling portfolio piece.
+
+The case study successfully demonstrates the designer's ability to handle complex enterprise UX challenges while maintaining focus on user needs and business goals. The systematic approach to problem-solving and clear documentation of the process makes this a valuable portfolio piece.
+                </div>
+              </div>
+            </div>
+          
+        
+
+        <!-- Technical Analysis & Screenshot -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
+          
+          <!-- Technical Analysis -->
+          <div class="technical-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+              <i class="fas fa-cogs"></i> Technical Analysis
+            </h3>
+            <div style="display: grid; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Problem Statement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Process Documentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Solution Presentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Impact Measurement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+            </div>
+          </div>
+
+          
+            <!-- Screenshot -->
+            <div class="screenshot-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-camera"></i> Case Study Screenshot
+              </h3>
+              <img src="reports/screenshots/case-study-1754465560077.png" style="width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" alt="Case study screenshot">
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="case-study-section " id="case-study-2" style="display: none;">
+        <div class="case-study-header-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+              <h2 style="font-size: 2.5em; margin-bottom: 15px; color: white;">Nicole Roberts | Optimizing User Feedback with a Scalable Review Template</h2>
+              <p style="font-size: 1.1em; opacity: 0.9; margin-bottom: 10px;">
+                <i class="fas fa-link"></i> 
+                <a href="https://www.nicolearoberts.com/case-studies/optimizing-user-feedback-with-a-scalable-review-template" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;">
+                  https://www.nicolearoberts.com/case-studies/optimizing-user-feedback-with-a-scalable-review-template
+                </a>
+              </p>
+              <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-file-alt"></i> 1518 words
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-images"></i> 43 images
+                </div>
+              </div>
+            </div>
+            
+            
+              <div style="text-align: center;">
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; min-width: 120px;">
+                  <div style="font-size: 3em; font-weight: bold; color: white; margin-bottom: 5px;">
+                    87
+                  </div>
+                  <div style="opacity: 0.9;">AI Overall Score</div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        
+          <!-- AI Analysis Grid -->
+          <div class="ai-analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            <!-- Project Overview -->
+            
+              <div class="analysis-card" style="background: #f8faff; border-left: 5px solid #667eea; padding: 25px; border-radius: 10px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.3em;">
+                  <i class="fas fa-project-diagram"></i> AI Analysis Status
+                </h3>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.2em;"></i>
+                  <span style="color: #333;">AI analysis completed - Individual case study insights processed</span>
+                </div>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                  Detailed insights including project overview, strengths, improvements, and recommendations are available in the raw AI analysis.
+                </p>
+              </div>
+            
+
+            <!-- Scoring Breakdown -->
+            <div class="scoring-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-chart-line"></i> AI Assessment Scores
+              </h3>
+              <div style="display: grid; gap: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0f9ff; border-radius: 8px;">
+                  <span style="font-weight: 500;">Storytelling</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #0369a1;">
+                    90/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0fdf4; border-radius: 8px;">
+                  <span style="font-weight: 500;">Visual Design</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #059669;">
+                    90/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fef3c7; border-radius: 8px;">
+                  <span style="font-weight: 500;">Content Strategy</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #d97706;">
+                    85/100
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Insights Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            
+
+            
+          </div>
+
+          
+
+          
+            <!-- Competitive Analysis -->
+            <div class="competitive-section" style="background: #faf5ff; border-radius: 10px; padding: 25px; margin-bottom: 30px; border-left: 5px solid #8b5cf6;">
+              <h3 style="color: #8b5cf6; margin-bottom: 15px; font-size: 1.3em;">
+                <i class="fas fa-chart-bar"></i> Competitive Analysis
+              </h3>
+              <p style="line-height: 1.6; color: #333;">85/100 - Shows before/after states and key improvements
+- Impact Measurement: 80/100 - Includes metrics but could be more detailed
+- Personal Growth: 85/100 - Good reflection section with key learnings
+
+3. **Visual Design Quality**
+- Layout and hierarchy: 90/100
+- Visual consistency: 85/100
+- Use of imagery/mockups: 90/100
+- Typography/readability: 85/100
+- Professional presentation: 90/100
+
+4. **Content Strategy**
+- Clarity: 85/100
+- Detail level: 90/100
+- Flow/structure: 85/100
+- Narrative voice: 80/100
+- Technical depth: 85/100
+
+5. **Specific Strengths**
+- Comprehensive competitive analysis
+- Clear problem definition
+- Strong visual documentation
+- Thoughtful solution exploration
+- Well-structured testing approach
+
+6. **Areas for Improvement**
+- Could provide more specific metrics and KPIs
+- More detail about technical constraints
+- Additional user testing insights
+- Deeper exploration of alternative solutions
+- More specific implementation challenges
+
+7. **Actionable Recommendations**
+1. Add more quantitative data about impact
+2. Include specific user quotes from testing
+3. Expand on technical implementation details
+
+8. **Competitive Analysis**
+This case study is above average for the industry, particularly in its documentation of the design process and solution exploration. It compares favorably with other enterprise UX case studies.
+
+9. **</p>
+            </div>
+          
+
+          
+            <!-- Overall Assessment -->
+            <div class="assessment-section" style="background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); border-radius: 15px; padding: 30px; margin-bottom: 30px; border: 1px solid #e5e7eb;">
+              <h3 style="color: #1f2937; margin-bottom: 20px; font-size: 1.4em;">
+                <i class="fas fa-clipboard-check"></i> AI Overall Assessment
+              </h3>
+              <div style="background: white; padding: 25px; border-radius: 10px; border-left: 4px solid #6b7280;">
+                <p style="line-height: 1.6; margin: 0; color: #374151; font-size: 1.1em;">87/100
+A strong case study that effectively demonstrates the designer's process and problem-solving abilities. The combination of clear problem definition, thorough process documentation, and thoughtful solution presentation makes this a compelling portfolio piece.
+
+The case study successfully balances detail with readability and shows strong enterprise UX design capabilities. The scalable approach to the solution demonstrates good systems thinking.</p>
+              </div>
+            </div>
+          
+
+          
+            <!-- Raw AI Analysis -->
+            <div class="raw-ai-section" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 30px;">
+              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #667eea; font-size: 1.4em;">
+                  <i class="fas fa-robot"></i> Complete AI Analysis
+                </h3>
+                <button onclick="toggleRawAnalysis(2)" style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                  <i class="fas fa-eye"></i> View Full Analysis
+                </button>
+              </div>
+              <div id="raw-analysis-2" style="display: none;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #667eea; font-family: monospace; white-space: pre-wrap; max-height: 500px; overflow-y: auto; line-height: 1.5;">
+                  Based on the provided case study information and image, I'll provide a detailed analysis:
+
+1. **Project Overview**
+This project focuses on redesigning Walmart's review template system to collect more detailed, item-specific feedback while improving user engagement. The goal was to create a scalable solution that could work across different product verticals while maintaining high completion rates.
+
+2. **Storytelling Assessment**
+- Problem Definition: 90/100 - Clearly articulates both business and user needs
+- Process Documentation: 85/100 - Strong competitive analysis and testing phases
+- Solution Presentation: 85/100 - Shows before/after states and key improvements
+- Impact Measurement: 80/100 - Includes metrics but could be more detailed
+- Personal Growth: 85/100 - Good reflection section with key learnings
+
+3. **Visual Design Quality**
+- Layout and hierarchy: 90/100
+- Visual consistency: 85/100
+- Use of imagery/mockups: 90/100
+- Typography/readability: 85/100
+- Professional presentation: 90/100
+
+4. **Content Strategy**
+- Clarity: 85/100
+- Detail level: 90/100
+- Flow/structure: 85/100
+- Narrative voice: 80/100
+- Technical depth: 85/100
+
+5. **Specific Strengths**
+- Comprehensive competitive analysis
+- Clear problem definition
+- Strong visual documentation
+- Thoughtful solution exploration
+- Well-structured testing approach
+
+6. **Areas for Improvement**
+- Could provide more specific metrics and KPIs
+- More detail about technical constraints
+- Additional user testing insights
+- Deeper exploration of alternative solutions
+- More specific implementation challenges
+
+7. **Actionable Recommendations**
+1. Add more quantitative data about impact
+2. Include specific user quotes from testing
+3. Expand on technical implementation details
+
+8. **Competitive Analysis**
+This case study is above average for the industry, particularly in its documentation of the design process and solution exploration. It compares favorably with other enterprise UX case studies.
+
+9. **Overall Assessment**: 87/100
+A strong case study that effectively demonstrates the designer's process and problem-solving abilities. The combination of clear problem definition, thorough process documentation, and thoughtful solution presentation makes this a compelling portfolio piece.
+
+The case study successfully balances detail with readability and shows strong enterprise UX design capabilities. The scalable approach to the solution demonstrates good systems thinking.
+                </div>
+              </div>
+            </div>
+          
+        
+
+        <!-- Technical Analysis & Screenshot -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
+          
+          <!-- Technical Analysis -->
+          <div class="technical-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+              <i class="fas fa-cogs"></i> Technical Analysis
+            </h3>
+            <div style="display: grid; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Problem Statement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Process Documentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Solution Presentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Impact Measurement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+            </div>
+          </div>
+
+          
+            <!-- Screenshot -->
+            <div class="screenshot-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-camera"></i> Case Study Screenshot
+              </h3>
+              <img src="reports/screenshots/case-study-1754465575578.png" style="width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" alt="Case study screenshot">
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="case-study-section " id="case-study-3" style="display: none;">
+        <div class="case-study-header-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+              <h2 style="font-size: 2.5em; margin-bottom: 15px; color: white;">arrow_forward View Live (In App)</h2>
+              <p style="font-size: 1.1em; opacity: 0.9; margin-bottom: 10px;">
+                <i class="fas fa-link"></i> 
+                <a href="https://www.walmart.com/ip/300694285?sid=1c261ebe-5618-4946-864d-f8b4a60e3f75" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;">
+                  https://www.walmart.com/ip/300694285?sid=1c261ebe-5618-4946-864d-f8b4a60e3f75
+                </a>
+              </p>
+              <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-file-alt"></i> 0 words
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-images"></i> 0 images
+                </div>
+              </div>
+            </div>
+            
+            
+          </div>
+        </div>
+
+        
+
+        <!-- Technical Analysis & Screenshot -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
+          
+          <!-- Technical Analysis -->
+          <div class="technical-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+              <i class="fas fa-cogs"></i> Technical Analysis
+            </h3>
+            <div style="display: grid; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Problem Statement</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Process Documentation</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Solution Presentation</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Impact Measurement</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+            </div>
+          </div>
+
+          
+        </div>
+      </div>
+    
+      <div class="case-study-section " id="case-study-4" style="display: none;">
+        <div class="case-study-header-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+              <h2 style="font-size: 2.5em; margin-bottom: 15px; color: white;">arrow_forwardView live</h2>
+              <p style="font-size: 1.1em; opacity: 0.9; margin-bottom: 10px;">
+                <i class="fas fa-link"></i> 
+                <a href="https://www.walmart.com/reviews/dashboard" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;">
+                  https://www.walmart.com/reviews/dashboard
+                </a>
+              </p>
+              <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-file-alt"></i> 0 words
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-images"></i> 0 images
+                </div>
+              </div>
+            </div>
+            
+            
+          </div>
+        </div>
+
+        
+
+        <!-- Technical Analysis & Screenshot -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
+          
+          <!-- Technical Analysis -->
+          <div class="technical-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+              <i class="fas fa-cogs"></i> Technical Analysis
+            </h3>
+            <div style="display: grid; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Problem Statement</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Process Documentation</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Solution Presentation</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Impact Measurement</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+            </div>
+          </div>
+
+          
+        </div>
+      </div>
+    
+      <div class="case-study-section " id="case-study-5" style="display: none;">
+        <div class="case-study-header-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+              <h2 style="font-size: 2.5em; margin-bottom: 15px; color: white;">arrow_forwardView live</h2>
+              <p style="font-size: 1.1em; opacity: 0.9; margin-bottom: 10px;">
+                <i class="fas fa-link"></i> 
+                <a href="https://www.walmart.com/reviews/ready-for-review?type=item" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;">
+                  https://www.walmart.com/reviews/ready-for-review?type=item
+                </a>
+              </p>
+              <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-file-alt"></i> 0 words
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-images"></i> 0 images
+                </div>
+              </div>
+            </div>
+            
+            
+          </div>
+        </div>
+
+        
+
+        <!-- Technical Analysis & Screenshot -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
+          
+          <!-- Technical Analysis -->
+          <div class="technical-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+              <i class="fas fa-cogs"></i> Technical Analysis
+            </h3>
+            <div style="display: grid; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Problem Statement</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Process Documentation</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Solution Presentation</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Impact Measurement</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+            </div>
+          </div>
+
+          
+        </div>
+      </div>
+    
+                    
+                    <div class="case-study-summary card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-bar"></i> Case Study Summary</h3>
+                        </div>
+                        <div class="card-content">
+                            
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
+        <div style="text-align: center; padding: 20px; background: #f0f9ff; border-radius: 8px;">
+          <div style="font-size: 2em; font-weight: bold; color: #0369a1;">100</div>
+          <div>Avg Storytelling</div>
+        </div>
+        <div style="text-align: center; padding: 20px; background: #f0fdf4; border-radius: 8px;">
+          <div style="font-size: 2em; font-weight: bold; color: #059669;">100</div>
+          <div>Avg UX Score</div>
+        </div>
+      </div>
+      
+      
+        <div style="margin-bottom: 15px;">
+          <strong style="color: #4CAF50;">Common Strengths:</strong>
+          <ul><li>Excellent storytelling in case studies</li><li>Well-structured case study presentation</li></ul>
+        </div>
+      
+      
+      
+    
+                        </div>
+                    </div>
+                
+            </section>
+
+            <!-- AI Insights Section -->
+            <section id="ai-insights" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-brain"></i> AI-Powered Insights</h2>
+                    <p>Claude AI analysis and recommendations</p>
+                </div>
+                
+                
+                    <div class="ai-analysis-grid">
+                        
+          <div class="card">
+            <div class="card-header">
+              <h3>Visual Design (85/100)</h3>
+            </div>
+            <div class="card-content">
+              <p><strong>AI Feedback:</strong> The design successfully implements a minimalist approach that puts content first. The typography choices and spacing create excellent readability, though the hero section could benefit from subtle animation or visual elements to increase engagement while maintaining the clean aesthetic.</p>
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #4CAF50;">Strengths:</strong>
+                  <ul><li>Clean, minimalist aesthetic that aligns with modern design trends</li><li>Excellent use of whitespace creating visual breathing room</li><li>Clear typographic hierarchy with well-chosen font pairings</li><li>Subtle color palette that maintains professionalism</li></ul>
+                </div>
+              
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #f44336;">Areas for Improvement:</strong>
+                  <ul><li>Limited visual interest in hero section</li><li>Could benefit from more subtle interactive elements</li><li>Navigation appears somewhat sparse</li></ul>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <h3>User Experience (80/100)</h3>
+            </div>
+            <div class="card-content">
+              <p><strong>AI Feedback:</strong> While the user experience is clean and straightforward, adding subtle micro-interactions and clearer navigation cues would enhance engagement without compromising the minimal design approach.</p>
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #4CAF50;">Strengths:</strong>
+                  <ul><li>Clear information hierarchy</li><li>Straightforward navigation structure</li><li>Consistent layout patterns</li></ul>
+                </div>
+              
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #f44336;">Areas for Improvement:</strong>
+                  <ul><li>Limited visual feedback for interactive elements</li><li>Navigation could be more prominent</li><li>Scroll depth requires clear indicators</li></ul>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <h3>Layout Structure (88/100)</h3>
+            </div>
+            <div class="card-content">
+              <p><strong>AI Feedback:</strong> The layout demonstrates strong understanding of spatial relationships and content hierarchy. The grid system effectively organizes content while maintaining visual harmony.</p>
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #4CAF50;">Strengths:</strong>
+                  <ul><li>Excellent use of grid system</li><li>Consistent spacing patterns</li><li>Well-balanced content blocks</li><li>Appropriate content width for readability</li></ul>
+                </div>
+              
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #f44336;">Areas for Improvement:</strong>
+                  <ul><li>Hero section could utilize space more effectively</li><li>Secondary navigation elements could be more prominent</li></ul>
+                </div>
+              
+            </div>
+          </div>
+        
+                    </div>
+                
+            </section>
+
+            <!-- Recommendations Section -->
+            <section id="recommendations" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-lightbulb"></i> Recommendations</h2>
+                    <p>Actionable improvements for better performance</p>
+                </div>
+                
+                <div class="recommendations-grid">
+                    
+          <div class="card">
+            <div class="card-header" style="background: #f44336; color: white;">
+              <h3>High Priority</h3>
+            </div>
+            <div class="card-content">
+              
+                <div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                  <strong>Visual Enhancement:</strong> Add subtle animations or transitions to hero section
+                  <div style="margin-top: 5px; font-size: 0.9em; color: #666;">
+                    <strong>Impact:</strong> Increased initial engagement while maintaining professionalism
+                  </div>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header" style="background: #FF9800; color: white;">
+              <h3>Medium Priority</h3>
+            </div>
+            <div class="card-content">
+              
+                <div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                  <strong>Navigation:</strong> Enhance navigation visibility and feedback states
+                  <div style="margin-top: 5px; font-size: 0.9em; color: #666;">
+                    <strong>Impact:</strong> Improved user orientation and interaction confidence
+                  </div>
+                </div>
+              
+            </div>
+          </div>
+        
+                </div>
+            </section>
+
+            <!-- Screenshots Section -->
+            <section id="screenshots" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-images"></i> Visual Documentation</h2>
+                    <p>Screenshots captured during analysis</p>
+                </div>
+                
+                <div class="screenshots-grid">
+                    
+      <div class="card">
+        <div class="card-header">
+          <h3>Homepage - Desktop</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">1920x1080 viewport</p>
+        </div>
+        <div class="card-content" style="padding: 0;">
+          <img src="reports/screenshots/screenshot-desktop-1754465508178.png" style="width: 100%; height: auto;" alt="Homepage - Desktop">
+        </div>
+      </div>
+    
+      <div class="card">
+        <div class="card-header">
+          <h3>Case Study - Nicole Roberts | Empowering Item Discovery with Gen AI Summaries</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">https://www.nicolearoberts.com/case-studies/empowering-item-discovery-with-gen-ai-summaries</p>
+        </div>
+        <div class="card-content" style="padding: 0;">
+          <img src="reports/screenshots/case-study-1754465543529.png" style="width: 100%; height: auto;" alt="Case Study - Nicole Roberts | Empowering Item Discovery with Gen AI Summaries">
+        </div>
+      </div>
+    
+      <div class="card">
+        <div class="card-header">
+          <h3>Case Study - Nicole Roberts | Creating a Reviewer Profile to Drive Engagement and Impact</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">https://www.nicolearoberts.com/case-studies/creating-a-reviewer-profile-to-drive-engagement-and-impact</p>
+        </div>
+        <div class="card-content" style="padding: 0;">
+          <img src="reports/screenshots/case-study-1754465560077.png" style="width: 100%; height: auto;" alt="Case Study - Nicole Roberts | Creating a Reviewer Profile to Drive Engagement and Impact">
+        </div>
+      </div>
+    
+      <div class="card">
+        <div class="card-header">
+          <h3>Case Study - Nicole Roberts | Optimizing User Feedback with a Scalable Review Template</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">https://www.nicolearoberts.com/case-studies/optimizing-user-feedback-with-a-scalable-review-template</p>
+        </div>
+        <div class="card-content" style="padding: 0;">
+          <img src="reports/screenshots/case-study-1754465575578.png" style="width: 100%; height: auto;" alt="Case Study - Nicole Roberts | Optimizing User Feedback with a Scalable Review Template">
+        </div>
+      </div>
+    
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Generated by Portfolio Agent • Powered by Claude AI • 8/6/2025</p>
+        </footer>
+    </div>
+
+    <script>
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active to selected nav button
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+        }
+
+        function expandCaseStudy(index) {
+            const details = document.getElementById(`case-study-details-${index}`);
+            const button = details.previousElementSibling.querySelector('.expand-btn');
+            
+            if (details.style.display === 'none' || !details.style.display) {
+                details.style.display = 'block';
+                button.innerHTML = '<i class="fas fa-chevron-up"></i> Show Less';
+            } else {
+                details.style.display = 'none';
+                button.innerHTML = '<i class="fas fa-chevron-down"></i> Show More';
+            }
+        }
+
+        function showCaseStudy(index) {
+            // Hide all case study sections
+            document.querySelectorAll('.case-study-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Remove active from all case study nav buttons
+            document.querySelectorAll('.case-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.background = 'white';
+                btn.style.color = '#667eea';
+            });
+            
+            // Show selected case study section
+            const targetSection = document.getElementById(`case-study-${index}`);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+            
+            // Add active to selected nav button
+            const activeBtn = document.querySelector(`[data-case="${index}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.style.background = '#667eea';
+                activeBtn.style.color = 'white';
+            }
+        }
+
+        function toggleRawAnalysis(index) {
+            const rawSection = document.getElementById(`raw-analysis-${index}`);
+            const button = event.target.closest('button');
+            
+            if (rawSection.style.display === 'none' || !rawSection.style.display) {
+                rawSection.style.display = 'block';
+                button.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Full Analysis';
+            } else {
+                rawSection.style.display = 'none';
+                button.innerHTML = '<i class="fas fa-eye"></i> View Full Analysis';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('overview');
+        });
+    
+    </script>
+</body>
+</html>

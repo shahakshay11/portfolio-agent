@@ -1,0 +1,2222 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Analysis - vyomikaparikh.com</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .app {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+        }
+
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5em;
+        }
+
+        .logo h1 {
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .site-info h2 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .site-info a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+        }
+
+        .overall-score {
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .score-circle.excellent { background: linear-gradient(135deg, #4CAF50, #45a049); }
+        .score-circle.good { background: linear-gradient(135deg, #FF9800, #F57C00); }
+        .score-circle.needs-improvement { background: linear-gradient(135deg, #f44336, #d32f2f); }
+
+        .score-number {
+            font-size: 1.5em;
+        }
+
+        .score-label {
+            font-size: 0.8em;
+            opacity: 0.9;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        /* Navigation */
+        .nav {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            sticky: top 0;
+            z-index: 100;
+        }
+
+        .nav-content {
+            display: flex;
+            padding: 0 30px;
+            overflow-x: auto;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 15px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .nav-btn.active {
+            border-bottom-color: #667eea;
+            color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .badge {
+            background: #667eea;
+            color: white;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 0.8em;
+            margin-left: 5px;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 30px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+        }
+
+        .section-header h2 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .card-header h3 {
+            color: #333;
+            font-size: 1.2em;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        /* Grids */
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .case-studies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .recommendations-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        /* Score Card */
+        .score-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .score-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .score-card .score-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .score-card .score-title {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .score-card .score-description {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Case Study Card */
+        .case-study-card {
+            border-left: 4px solid #667eea;
+        }
+
+        .case-study-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .case-study-title {
+            font-size: 1.3em;
+            color: #333;
+        }
+
+        .case-study-scores {
+            display: flex;
+            gap: 15px;
+        }
+
+        .mini-score {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .mini-score-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .mini-score-label {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        .responsive-preview {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .device-preview {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .device-header {
+            background: #333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px 8px 0 0;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        .device-preview img {
+            width: 100%;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .empty-state ul {
+            text-align: left;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+
+            .header-main {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .header-stats {
+                justify-content: center;
+            }
+
+            .main {
+                padding: 20px;
+            }
+
+            .nav-content {
+                padding: 0 20px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .responsive-preview {
+                flex-direction: column;
+            }
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-main">
+                    <div class="logo">
+                        <i class="fas fa-chart-line"></i>
+                        <h1>Portfolio Analyzer</h1>
+                    </div>
+                    <div class="header-info">
+                        <div class="site-info">
+                            <h2>vyomikaparikh.com</h2>
+                            <p><i class="fas fa-link"></i> <a href="https://vyomikaparikh.com/" target="_blank">https://vyomikaparikh.com/</a></p>
+                        </div>
+                        <div class="overall-score">
+                            <div class="score-circle excellent">
+                                <div class="score-number">82</div>
+                                <div class="score-label">Overall</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat">
+                        <i class="fas fa-desktop"></i>
+                        <span>Desktop & Mobile Tested</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-robot"></i>
+                        <span>AI Analyzed</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-book"></i>
+                        <span>5 Case Studies</span>
+                    </div>
+                    <div class="stat">
+                        <i class="far fa-clock"></i>
+                        <span>8/5/2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-content">
+                <button class="nav-btn active" onclick="showSection('overview')" data-section="overview">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Overview</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('homepage')" data-section="homepage">
+                    <i class="fas fa-home"></i>
+                    <span>Homepage</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('casestudies')" data-section="casestudies">
+                    <i class="fas fa-book-open"></i>
+                    <span>Case Studies</span>
+                    <span class="badge">5</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('ai-insights')" data-section="ai-insights">
+                    <i class="fas fa-brain"></i>
+                    <span>AI Insights</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('recommendations')" data-section="recommendations">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Recommendations</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('screenshots')" data-section="screenshots">
+                    <i class="fas fa-images"></i>
+                    <span>Screenshots</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Overview Section -->
+            <section id="overview" class="section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Performance Overview</h2>
+                    <p>Comprehensive analysis of vyomikaparikh.com</p>
+                </div>
+                
+                <div class="score-grid">
+                    
+      <div class="score-card">
+        <div class="score-value" style="color: #4CAF50;">88</div>
+        <div class="score-title">Visual Design</div>
+        <div class="score-description">Clean, minimalist design approach</div>
+      </div>
+    
+      <div class="score-card">
+        <div class="score-value" style="color: #4CAF50;">80</div>
+        <div class="score-title">User Experience</div>
+        <div class="score-description">Clear project categorization</div>
+      </div>
+    
+      <div class="score-card">
+        <div class="score-value" style="color: #4CAF50;">85</div>
+        <div class="score-title">Content Strategy</div>
+        <div class="score-description">Clear project categorization (Live Product, Academic)</div>
+      </div>
+    
+      <div class="score-card">
+        <div class="score-value" style="color: #FF9800;">78</div>
+        <div class="score-title">Technical Implementation</div>
+        <div class="score-description">Clean, semantic markup</div>
+      </div>
+    
+                </div>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-pie"></i> Executive Summary</h3>
+                        </div>
+                        <div class="card-content">
+                            <p>The portfolio demonstrates a clean, modern aesthetic with strong visual hierarchy and thoughtful use of color blocking. While the design shows professional sophistication, there are opportunities to enhance navigation and improve content density for better storytelling.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-trophy"></i> Key Strengths</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul><li>Clean, minimalist design approach</li><li>Effective use of white space</li><li>Strong color blocking to separate sections</li></ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Homepage Section -->
+            <section id="homepage" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-home"></i> Homepage Analysis</h2>
+                    <p>First impression and main page evaluation</p>
+                </div>
+                
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-eye"></i> Visual Design</h3>
+                        </div>
+                        <div class="card-content">
+                            
+      <div class="homepage-metrics">
+        <div style="display: grid; gap: 15px;">
+          <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+            <span>Visual Appeal</span>
+            <span style="color: #4CAF50; font-weight: bold;">Excellent</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+            <span>Content Clarity</span>
+            <span style="color: #4CAF50; font-weight: bold;">Good</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+            <span>Navigation</span>
+            <span style="color: #FF9800; font-weight: bold;">Needs Improvement</span>
+          </div>
+        </div>
+      </div>
+    
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-mobile-alt"></i> Responsive Design</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="responsive-preview">
+                                
+                                    <div class="device-preview desktop">
+                                        <div class="device-header">Desktop (1920x1080)</div>
+                                        <img src="reports/screenshots/screenshot-desktop-1754455330837.png" alt="Desktop screenshot">
+                                    </div>
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Case Studies Section -->
+            <section id="casestudies" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-book-open"></i> Case Studies Analysis</h2>
+                    <p>5 case studies found and analyzed</p>
+                </div>
+                
+                
+                    <!-- Case Study Navigation -->
+                    <div class="case-study-nav" style="margin-bottom: 30px;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            
+                                <button onclick="showCaseStudy(0)" class="case-nav-btn active" data-case="0" style="
+                                    padding: 10px 20px; 
+                                    border: 2px solid #667eea; 
+                                    background: #667eea; 
+                                    color: white; 
+                                    border-radius: 25px; 
+                                    cursor: pointer; 
+                                    font-weight: 500;
+                                    transition: all 0.3s ease;
+                                ">
+                                    Habit Coach AI | VyomikaParikh.com
+                                </button>
+                            
+                                <button onclick="showCaseStudy(1)" class="case-nav-btn " data-case="1" style="
+                                    padding: 10px 20px; 
+                                    border: 2px solid #667eea; 
+                                    background: white; 
+                                    color: #667eea; 
+                                    border-radius: 25px; 
+                                    cursor: pointer; 
+                                    font-weight: 500;
+                                    transition: all 0.3s ease;
+                                ">
+                                    ZS ZAIDYN | VyomikaParikh.com
+                                </button>
+                            
+                                <button onclick="showCaseStudy(2)" class="case-nav-btn " data-case="2" style="
+                                    padding: 10px 20px; 
+                                    border: 2px solid #667eea; 
+                                    background: white; 
+                                    color: #667eea; 
+                                    border-radius: 25px; 
+                                    cursor: pointer; 
+                                    font-weight: 500;
+                                    transition: all 0.3s ease;
+                                ">
+                                    Jointhelp | VyomikaParikh.com
+                                </button>
+                            
+                                <button onclick="showCaseStudy(3)" class="case-nav-btn " data-case="3" style="
+                                    padding: 10px 20px; 
+                                    border: 2px solid #667eea; 
+                                    background: white; 
+                                    color: #667eea; 
+                                    border-radius: 25px; 
+                                    cursor: pointer; 
+                                    font-weight: 500;
+                                    transition: all 0.3s ease;
+                                ">
+                                    Tata motors | VyomikaParikh.com
+                                </button>
+                            
+                                <button onclick="showCaseStudy(4)" class="case-nav-btn " data-case="4" style="
+                                    padding: 10px 20px; 
+                                    border: 2px solid #667eea; 
+                                    background: white; 
+                                    color: #667eea; 
+                                    border-radius: 25px; 
+                                    cursor: pointer; 
+                                    font-weight: 500;
+                                    transition: all 0.3s ease;
+                                ">
+                                    ZS Persona | VyomikaParikh.com
+                                </button>
+                            
+                        </div>
+                    </div>
+
+                    <!-- Individual Case Study Sections -->
+                    
+      <div class="case-study-section active" id="case-study-0" style="display: block;">
+        <div class="case-study-header-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+              <h2 style="font-size: 2.5em; margin-bottom: 15px; color: white;">Habit Coach AI | VyomikaParikh.com</h2>
+              <p style="font-size: 1.1em; opacity: 0.9; margin-bottom: 10px;">
+                <i class="fas fa-link"></i> 
+                <a href="https://www.vyomikaparikh.com/project-habit-coach-ai" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;">
+                  https://www.vyomikaparikh.com/project-habit-coach-ai
+                </a>
+              </p>
+              <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-file-alt"></i> 5148 words
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-images"></i> 46 images
+                </div>
+              </div>
+            </div>
+            
+            
+              <div style="text-align: center;">
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; min-width: 120px;">
+                  <div style="font-size: 3em; font-weight: bold; color: white; margin-bottom: 5px;">
+                    85
+                  </div>
+                  <div style="opacity: 0.9;">AI Overall Score</div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        
+          <!-- AI Analysis Grid -->
+          <div class="ai-analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            <!-- Project Overview -->
+            
+              <div class="analysis-card" style="background: #f8faff; border-left: 5px solid #667eea; padding: 25px; border-radius: 10px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.3em;">
+                  <i class="fas fa-project-diagram"></i> AI Analysis Status
+                </h3>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.2em;"></i>
+                  <span style="color: #333;">AI analysis completed - Individual case study insights processed</span>
+                </div>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                  Detailed insights including project overview, strengths, improvements, and recommendations are available in the raw AI analysis.
+                </p>
+              </div>
+            
+
+            <!-- Scoring Breakdown -->
+            <div class="scoring-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-chart-line"></i> AI Assessment Scores
+              </h3>
+              <div style="display: grid; gap: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0f9ff; border-radius: 8px;">
+                  <span style="font-weight: 500;">Storytelling</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #0369a1;">
+                    85/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0fdf4; border-radius: 8px;">
+                  <span style="font-weight: 500;">Visual Design</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #059669;">
+                    95/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fef3c7; border-radius: 8px;">
+                  <span style="font-weight: 500;">Content Strategy</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #d97706;">
+                    90/100
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Insights Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            
+
+            
+          </div>
+
+          
+
+          
+
+          
+            <!-- Overall Assessment -->
+            <div class="assessment-section" style="background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); border-radius: 15px; padding: 30px; margin-bottom: 30px; border: 1px solid #e5e7eb;">
+              <h3 style="color: #1f2937; margin-bottom: 20px; font-size: 1.4em;">
+                <i class="fas fa-clipboard-check"></i> AI Overall Assessment
+              </h3>
+              <div style="background: white; padding: 25px; border-radius: 10px; border-left: 4px solid #6b7280;">
+                <p style="line-height: 1.6; margin: 0; color: #374151; font-size: 1.1em;">85/100
+A strong case study that effectively communicates the project while maintaining high visual standards. The main opportunities for improvement lie in deeper process documentation and impact measurement.
+
+The case study demonstrates professional-level execution with particularly strong visual design elements. The dark theme and coach selection interface shown in the image reflect contemporary design trends and strong attention to detail.</p>
+              </div>
+            </div>
+          
+
+          
+            <!-- Raw AI Analysis -->
+            <div class="raw-ai-section" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 30px;">
+              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #667eea; font-size: 1.4em;">
+                  <i class="fas fa-robot"></i> Complete AI Analysis
+                </h3>
+                <button onclick="toggleRawAnalysis(0)" style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                  <i class="fas fa-eye"></i> View Full Analysis
+                </button>
+              </div>
+              <div id="raw-analysis-0" style="display: none;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #667eea; font-family: monospace; white-space: pre-wrap; max-height: 500px; overflow-y: auto; line-height: 1.5;">
+                  Based on the provided information and image, I'll provide a detailed analysis of this UX case study:
+
+1. **Project Overview**
+Habit Coach AI appears to be a conversational AI coaching platform focused on self-improvement through personalized digital coaching. The project aims to reimagine how people approach personal development using AI technology.
+
+2. **Storytelling Assessment** (80/100)
+- Problem Definition: 85/100 - Clear presentation of the concept
+- Process Documentation: 75/100 - Present but could be more detailed
+- Solution Presentation: 85/100 - Strong visual presentation of the final product
+- Impact Measurement: 70/100 - Could use more concrete metrics
+- Personal Growth: 60/100 - Reflection component appears limited
+
+3. **Visual Design Quality** (90/100)
+- Layout and hierarchy: 95/100 - Excellent use of space and structure
+- Visual consistency: 90/100 - Strong brand cohesion
+- Use of imagery/mockups: 95/100 - High-quality device mockups and UI presentations
+- Typography: 85/100 - Clean, professional type treatment
+- Professional presentation: 90/100 - Polished, modern aesthetic
+
+4. **Content Strategy** (85/100)
+- Clarity: 90/100 - Clear communication of concept
+- Detail level: 85/100 - Good balance of information
+- Flow/structure: 85/100 - Logical progression
+- Narrative voice: 80/100 - Professional but could be more engaging
+- Technical depth: 85/100 - Good balance of technical and accessible content
+
+5. **Specific Strengths**
+- Outstanding visual presentation
+- Clear information architecture
+- Strong product visualization
+- Innovative concept presentation
+- Professional mockups and UI design
+
+6. **Areas for Improvement**
+- Add more quantitative impact metrics
+- Expand reflection section
+- Include more user research details
+- Add more process documentation
+- Strengthen the narrative arc
+
+7. **Actionable Recommendations**
+1. Add a dedicated metrics/impact section with concrete numbers
+2. Include more detailed user research findings and insights
+3. Expand the reflection section with specific learnings and challenges
+
+8. **Competitive Analysis**
+This case study is above average in terms of visual presentation and matches industry standards for content depth. It stands out for its clean design and clear information architecture.
+
+9. **Overall Assessment**: 85/100
+A strong case study that effectively communicates the project while maintaining high visual standards. The main opportunities for improvement lie in deeper process documentation and impact measurement.
+
+The case study demonstrates professional-level execution with particularly strong visual design elements. The dark theme and coach selection interface shown in the image reflect contemporary design trends and strong attention to detail.
+                </div>
+              </div>
+            </div>
+          
+        
+
+        <!-- Technical Analysis & Screenshot -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
+          
+          <!-- Technical Analysis -->
+          <div class="technical-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+              <i class="fas fa-cogs"></i> Technical Analysis
+            </h3>
+            <div style="display: grid; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Problem Statement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Process Documentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Solution Presentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Impact Measurement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+            </div>
+          </div>
+
+          
+            <!-- Screenshot -->
+            <div class="screenshot-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-camera"></i> Case Study Screenshot
+              </h3>
+              <img src="reports/screenshots/case-study-1754455370084.png" style="width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" alt="Case study screenshot">
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="case-study-section " id="case-study-1" style="display: none;">
+        <div class="case-study-header-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+              <h2 style="font-size: 2.5em; margin-bottom: 15px; color: white;">ZS ZAIDYN | VyomikaParikh.com</h2>
+              <p style="font-size: 1.1em; opacity: 0.9; margin-bottom: 10px;">
+                <i class="fas fa-link"></i> 
+                <a href="https://www.vyomikaparikh.com/zs-zaidyn" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;">
+                  https://www.vyomikaparikh.com/zs-zaidyn
+                </a>
+              </p>
+              <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-file-alt"></i> 3463 words
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-images"></i> 15 images
+                </div>
+              </div>
+            </div>
+            
+            
+              <div style="text-align: center;">
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; min-width: 120px;">
+                  <div style="font-size: 3em; font-weight: bold; color: white; margin-bottom: 5px;">
+                    75
+                  </div>
+                  <div style="opacity: 0.9;">AI Overall Score</div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        
+          <!-- AI Analysis Grid -->
+          <div class="ai-analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            <!-- Project Overview -->
+            
+              <div class="analysis-card" style="background: #f8faff; border-left: 5px solid #667eea; padding: 25px; border-radius: 10px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.3em;">
+                  <i class="fas fa-project-diagram"></i> AI Analysis Status
+                </h3>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.2em;"></i>
+                  <span style="color: #333;">AI analysis completed - Individual case study insights processed</span>
+                </div>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                  Detailed insights including project overview, strengths, improvements, and recommendations are available in the raw AI analysis.
+                </p>
+              </div>
+            
+
+            <!-- Scoring Breakdown -->
+            <div class="scoring-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-chart-line"></i> AI Assessment Scores
+              </h3>
+              <div style="display: grid; gap: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0f9ff; border-radius: 8px;">
+                  <span style="font-weight: 500;">Storytelling</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #0369a1;">
+                    80/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0fdf4; border-radius: 8px;">
+                  <span style="font-weight: 500;">Visual Design</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #059669;">
+                    90/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fef3c7; border-radius: 8px;">
+                  <span style="font-weight: 500;">Content Strategy</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #d97706;">
+                    85/100
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Insights Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            
+
+            
+          </div>
+
+          
+
+          
+
+          
+
+          
+            <!-- Raw AI Analysis -->
+            <div class="raw-ai-section" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 30px;">
+              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #667eea; font-size: 1.4em;">
+                  <i class="fas fa-robot"></i> Complete AI Analysis
+                </h3>
+                <button onclick="toggleRawAnalysis(1)" style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                  <i class="fas fa-eye"></i> View Full Analysis
+                </button>
+              </div>
+              <div id="raw-analysis-1" style="display: none;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #667eea; font-family: monospace; white-space: pre-wrap; max-height: 500px; overflow-y: auto; line-height: 1.5;">
+                  Based on the provided case study information and image, I'll provide a detailed analysis:
+
+1. **Project Overview**
+This project appears to be a field operations and incentive management system for pharmaceutical sales teams, focusing on streamlining operations and tracking performance metrics. The interface shown demonstrates a dashboard for managing sales quotas, reports, and performance tracking.
+
+2. **Storytelling Assessment** (75/100)
+- Problem Definition: 80/100 - Clear focus on field operations challenges
+- Process Documentation: 70/100 - Shows system architecture but could use more detail
+- Solution Presentation: 85/100 - Strong visual demonstration of the dashboard
+- Impact Measurement: 75/100 - Includes metrics but could be more comprehensive
+- Personal Growth: 65/100 - Limited reflection visible
+
+3. **Visual Design Quality** (85/100)
+- Layout and hierarchy: 90/100 - Clean, organized dashboard layout
+- Visual consistency: 85/100 - Consistent color scheme and design system
+- Use of imagery: 80/100 - Professional mockups with clear purpose
+- Typography: 85/100 - Clear hierarchy and readable text
+- Professional presentation: 85/100 - Polished and refined look
+
+4. **Content Strategy** (80/100)
+- Clarity: 85/100 - Clear presentation of features and functionality
+- Detail level: 80/100 - Good balance of technical and user-friendly information
+- Flow structure: 75/100 - Logical navigation and information architecture
+- Narrative voice: 75/100 - Professional but could be more engaging
+- Technical depth: 85/100 - Strong technical implementation details
+
+5. **Specific Strengths**
+- Excellent dashboard design with clear information hierarchy
+- Strong visual system with consistent styling
+- Clear presentation of key metrics and KPIs
+- Effective use of navigation and information architecture
+
+6. **Areas for Improvement**
+- Add more user research and discovery process details
+- Include more specific impact metrics and results
+- Expand on personal learnings and challenges
+- Add more context about user testing and iterations
+
+7. **Actionable Recommendations**
+1. Add a dedicated section on user research and testing
+2. Include specific before/after metrics and ROI
+3. Create a challenges/learnings section
+
+8. **Competitive Analysis**
+This case study is on par with industry standards but could benefit from more depth in the discovery and impact sections to be truly outstanding.
+
+9. **Overall Assessment** (82/100)
+A strong case study that effectively demonstrates technical and design capabilities, with room for improvement in storytelling and impact measurement.
+
+The case study shows professional-level work with clear attention to detail in the interface design. The main opportunity for improvement lies in deeper storytelling and more comprehensive documentation of the design process.
+                </div>
+              </div>
+            </div>
+          
+        
+
+        <!-- Technical Analysis & Screenshot -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
+          
+          <!-- Technical Analysis -->
+          <div class="technical-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+              <i class="fas fa-cogs"></i> Technical Analysis
+            </h3>
+            <div style="display: grid; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Problem Statement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Process Documentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Solution Presentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Impact Measurement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+            </div>
+          </div>
+
+          
+            <!-- Screenshot -->
+            <div class="screenshot-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-camera"></i> Case Study Screenshot
+              </h3>
+              <img src="reports/screenshots/case-study-1754455386562.png" style="width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" alt="Case study screenshot">
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="case-study-section " id="case-study-2" style="display: none;">
+        <div class="case-study-header-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+              <h2 style="font-size: 2.5em; margin-bottom: 15px; color: white;">Jointhelp | VyomikaParikh.com</h2>
+              <p style="font-size: 1.1em; opacity: 0.9; margin-bottom: 10px;">
+                <i class="fas fa-link"></i> 
+                <a href="https://www.vyomikaparikh.com/jointhelp" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;">
+                  https://www.vyomikaparikh.com/jointhelp
+                </a>
+              </p>
+              <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-file-alt"></i> 3044 words
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-images"></i> 10 images
+                </div>
+              </div>
+            </div>
+            
+            
+              <div style="text-align: center;">
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; min-width: 120px;">
+                  <div style="font-size: 3em; font-weight: bold; color: white; margin-bottom: 5px;">
+                    82
+                  </div>
+                  <div style="opacity: 0.9;">AI Overall Score</div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        
+          <!-- AI Analysis Grid -->
+          <div class="ai-analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            <!-- Project Overview -->
+            
+              <div class="analysis-card" style="background: #f8faff; border-left: 5px solid #667eea; padding: 25px; border-radius: 10px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.3em;">
+                  <i class="fas fa-project-diagram"></i> Project Overview
+                </h3>
+                <p style="line-height: 1.6; color: #333;">This project focuses on designing healthcare solutions for knee osteoarthritis, specifically utilizing wearable technology (smartwatch interface) to help track and manage pain levels and activity for patients with knee osteoarthritis.
+
+2. **</p>
+              </div>
+            
+
+            <!-- Scoring Breakdown -->
+            <div class="scoring-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-chart-line"></i> AI Assessment Scores
+              </h3>
+              <div style="display: grid; gap: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0f9ff; border-radius: 8px;">
+                  <span style="font-weight: 500;">Storytelling</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #0369a1;">
+                    80/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0fdf4; border-radius: 8px;">
+                  <span style="font-weight: 500;">Visual Design</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #059669;">
+                    90/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fef3c7; border-radius: 8px;">
+                  <span style="font-weight: 500;">Content Strategy</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #d97706;">
+                    85/100
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Insights Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            
+              <div class="insights-card" style="background: #f0fdf4; border-radius: 10px; padding: 25px; border-left: 5px solid #10b981;">
+                <h3 style="color: #059669; margin-bottom: 20px; font-size: 1.3em;">
+                  <i class="fas fa-thumbs-up"></i> Key Strengths
+                </h3>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      Excellent integration of product screenshots with context
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      Clear visual hierarchy in the interface design
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      Strong understanding of healthcare UX principles
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      Professional presentation of technical solutions
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      **
+                    </li>
+                  
+                </ul>
+              </div>
+            
+
+            
+              <div class="insights-card" style="background: #fef2f2; border-radius: 10px; padding: 25px; border-left: 5px solid #ef4444;">
+                <h3 style="color: #dc2626; margin-bottom: 20px; font-size: 1.3em;">
+                  <i class="fas fa-arrow-up"></i> Areas for Improvement
+                </h3>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      Could include more detailed user research findings
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      Impact metrics could be more prominently featured
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      Add more reflection on design decisions
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      Include more iteration examples
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      **
+                    </li>
+                  
+                </ul>
+              </div>
+            
+          </div>
+
+          
+            <!-- Actionable Recommendations -->
+            <div class="recommendations-section" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 30px;">
+              <h3 style="color: #667eea; margin-bottom: 25px; font-size: 1.4em;">
+                <i class="fas fa-lightbulb"></i> Actionable Recommendations
+              </h3>
+              <div style="display: grid; gap: 20px;">
+                
+                  <div style="background: #f8f9ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px;">
+                    <div style="display: flex; align-items: flex-start; gap: 15px;">
+                      <div style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">
+                        1
+                      </div>
+                      <div style="flex: 1;">
+                        <p style="margin: 0; line-height: 1.6; font-weight: 500;">Add a dedicated metrics/impact section with clear KPIs</p>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div style="background: #f8f9ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px;">
+                    <div style="display: flex; align-items: flex-start; gap: 15px;">
+                      <div style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">
+                        2
+                      </div>
+                      <div style="flex: 1;">
+                        <p style="margin: 0; line-height: 1.6; font-weight: 500;">Include more user testing feedback and iterations</p>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div style="background: #f8f9ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px;">
+                    <div style="display: flex; align-items: flex-start; gap: 15px;">
+                      <div style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">
+                        3
+                      </div>
+                      <div style="flex: 1;">
+                        <p style="margin: 0; line-height: 1.6; font-weight: 500;">Create a stronger narrative arc with personal insights</p>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div style="background: #f8f9ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px;">
+                    <div style="display: flex; align-items: flex-start; gap: 15px;">
+                      <div style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">
+                        4
+                      </div>
+                      <div style="flex: 1;">
+                        <p style="margin: 0; line-height: 1.6; font-weight: 500;">**</p>
+                      </div>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          
+
+          
+            <!-- Competitive Analysis -->
+            <div class="competitive-section" style="background: #faf5ff; border-radius: 10px; padding: 25px; margin-bottom: 30px; border-left: 5px solid #8b5cf6;">
+              <h3 style="color: #8b5cf6; margin-bottom: 15px; font-size: 1.3em;">
+                <i class="fas fa-chart-bar"></i> Competitive Analysis
+              </h3>
+              <p style="line-height: 1.6; color: #333;">This case study is on par with industry standards for healthcare UX design, particularly in its visual presentation. The technical depth is appropriate for the healthcare sector.
+
+9. **</p>
+            </div>
+          
+
+          
+            <!-- Overall Assessment -->
+            <div class="assessment-section" style="background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); border-radius: 15px; padding: 30px; margin-bottom: 30px; border: 1px solid #e5e7eb;">
+              <h3 style="color: #1f2937; margin-bottom: 20px; font-size: 1.4em;">
+                <i class="fas fa-clipboard-check"></i> AI Overall Assessment
+              </h3>
+              <div style="background: white; padding: 25px; border-radius: 10px; border-left: 4px solid #6b7280;">
+                <p style="line-height: 1.6; margin: 0; color: #374151; font-size: 1.1em;">82/100
+A strong case study that effectively demonstrates healthcare UX design capabilities. The combination of clear interface design and healthcare context shows professional-level work, though there's room for deeper storytelling and impact measurement.
+
+The project successfully balances technical healthcare requirements with user-friendly design, particularly evident in the smartwatch interface shown. The visual presentation is professional and appropriate for the healthcare sector.</p>
+              </div>
+            </div>
+          
+
+          
+            <!-- Raw AI Analysis -->
+            <div class="raw-ai-section" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 30px;">
+              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #667eea; font-size: 1.4em;">
+                  <i class="fas fa-robot"></i> Complete AI Analysis
+                </h3>
+                <button onclick="toggleRawAnalysis(2)" style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                  <i class="fas fa-eye"></i> View Full Analysis
+                </button>
+              </div>
+              <div id="raw-analysis-2" style="display: none;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #667eea; font-family: monospace; white-space: pre-wrap; max-height: 500px; overflow-y: auto; line-height: 1.5;">
+                  Based on the provided image and case study information, I'll provide a detailed analysis:
+
+1. **Project Overview**:
+This project focuses on designing healthcare solutions for knee osteoarthritis, specifically utilizing wearable technology (smartwatch interface) to help track and manage pain levels and activity for patients with knee osteoarthritis.
+
+2. **Storytelling Assessment** (75/100):
+- Problem Definition: 80/100 - Clear healthcare focus
+- Process Documentation: 70/100 - Present but could be more detailed
+- Solution Presentation: 85/100 - Strong visual demonstration
+- Impact Measurement: 70/100 - Metrics could be more prominent
+- Personal Growth: 60/100 - Limited reflection evident
+
+3. **Visual Design Quality** (85/100):
+- Layout and hierarchy: 90/100 - Clean, professional layout
+- Visual consistency: 85/100 - Cohesive design system
+- Use of imagery and mockups: 90/100 - High-quality smartwatch interface mockups
+- Typography and readability: 85/100 - Clear hierarchy
+- Professional presentation: 80/100 - Modern and medical-appropriate
+
+4. **Content Strategy** (80/100):
+- Clarity of communication: 85/100
+- Appropriate level of detail: 75/100
+- Logical flow and structure: 80/100
+- Engaging narrative voice: 75/100
+- Technical depth vs accessibility: 85/100
+
+5. **Specific Strengths**:
+- Excellent integration of product screenshots with context
+- Clear visual hierarchy in the interface design
+- Strong understanding of healthcare UX principles
+- Professional presentation of technical solutions
+
+6. **Areas for Improvement**:
+- Could include more detailed user research findings
+- Impact metrics could be more prominently featured
+- Add more reflection on design decisions
+- Include more iteration examples
+
+7. **Actionable Recommendations**:
+1. Add a dedicated metrics/impact section with clear KPIs
+2. Include more user testing feedback and iterations
+3. Create a stronger narrative arc with personal insights
+
+8. **Competitive Analysis**:
+This case study is on par with industry standards for healthcare UX design, particularly in its visual presentation. The technical depth is appropriate for the healthcare sector.
+
+9. **Overall Assessment**: 82/100
+A strong case study that effectively demonstrates healthcare UX design capabilities. The combination of clear interface design and healthcare context shows professional-level work, though there's room for deeper storytelling and impact measurement.
+
+The project successfully balances technical healthcare requirements with user-friendly design, particularly evident in the smartwatch interface shown. The visual presentation is professional and appropriate for the healthcare sector.
+                </div>
+              </div>
+            </div>
+          
+        
+
+        <!-- Technical Analysis & Screenshot -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
+          
+          <!-- Technical Analysis -->
+          <div class="technical-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+              <i class="fas fa-cogs"></i> Technical Analysis
+            </h3>
+            <div style="display: grid; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Problem Statement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Process Documentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Solution Presentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Impact Measurement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+            </div>
+          </div>
+
+          
+            <!-- Screenshot -->
+            <div class="screenshot-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-camera"></i> Case Study Screenshot
+              </h3>
+              <img src="reports/screenshots/case-study-1754455402903.png" style="width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" alt="Case study screenshot">
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="case-study-section " id="case-study-3" style="display: none;">
+        <div class="case-study-header-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+              <h2 style="font-size: 2.5em; margin-bottom: 15px; color: white;">Tata motors | VyomikaParikh.com</h2>
+              <p style="font-size: 1.1em; opacity: 0.9; margin-bottom: 10px;">
+                <i class="fas fa-link"></i> 
+                <a href="https://www.vyomikaparikh.com/tata-motors" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;">
+                  https://www.vyomikaparikh.com/tata-motors
+                </a>
+              </p>
+              <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-file-alt"></i> 4169 words
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-images"></i> 26 images
+                </div>
+              </div>
+            </div>
+            
+            
+              <div style="text-align: center;">
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; min-width: 120px;">
+                  <div style="font-size: 3em; font-weight: bold; color: white; margin-bottom: 5px;">
+                    75
+                  </div>
+                  <div style="opacity: 0.9;">AI Overall Score</div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        
+          <!-- AI Analysis Grid -->
+          <div class="ai-analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            <!-- Project Overview -->
+            
+              <div class="analysis-card" style="background: #f8faff; border-left: 5px solid #667eea; padding: 25px; border-radius: 10px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.3em;">
+                  <i class="fas fa-project-diagram"></i> AI Analysis Status
+                </h3>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.2em;"></i>
+                  <span style="color: #333;">AI analysis completed - Individual case study insights processed</span>
+                </div>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                  Detailed insights including project overview, strengths, improvements, and recommendations are available in the raw AI analysis.
+                </p>
+              </div>
+            
+
+            <!-- Scoring Breakdown -->
+            <div class="scoring-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-chart-line"></i> AI Assessment Scores
+              </h3>
+              <div style="display: grid; gap: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0f9ff; border-radius: 8px;">
+                  <span style="font-weight: 500;">Storytelling</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #0369a1;">
+                    90/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0fdf4; border-radius: 8px;">
+                  <span style="font-weight: 500;">Visual Design</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #059669;">
+                    95/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fef3c7; border-radius: 8px;">
+                  <span style="font-weight: 500;">Content Strategy</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #d97706;">
+                    90/100
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Insights Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            
+
+            
+          </div>
+
+          
+
+          
+
+          
+
+          
+            <!-- Raw AI Analysis -->
+            <div class="raw-ai-section" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 30px;">
+              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #667eea; font-size: 1.4em;">
+                  <i class="fas fa-robot"></i> Complete AI Analysis
+                </h3>
+                <button onclick="toggleRawAnalysis(3)" style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                  <i class="fas fa-eye"></i> View Full Analysis
+                </button>
+              </div>
+              <div id="raw-analysis-3" style="display: none;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #667eea; font-family: monospace; white-space: pre-wrap; max-height: 500px; overflow-y: auto; line-height: 1.5;">
+                  Based on the provided case study, here's a detailed analysis:
+
+1. **Project Overview**
+This project focuses on redesigning the search experience for Tata Motors' auto mechanics in India, serving a user base of 52,000 mechanics. The project aims to improve the parts search functionality in the EDukaan platform, making it more efficient and user-friendly for mechanics.
+
+2. **Storytelling Assessment** (85/100)
+- Problem Definition: 90/100 - Clear presentation of the challenge
+- Process Documentation: 85/100 - Well-documented design process
+- Solution Presentation: 90/100 - Strong visual presentation of the solution
+- Impact Measurement: 80/100 - Good metrics included
+- Personal Growth: 80/100 - Includes learning reflections
+
+3. **Visual Design Quality** (90/100)
+- Layout and hierarchy: 95/100 - Excellent use of space and structure
+- Visual consistency: 90/100 - Consistent design system
+- Use of imagery and mockups: 95/100 - High-quality, relevant screenshots
+- Typography and readability: 85/100 - Clear typography choices
+- Professional presentation: 90/100 - Polished look and feel
+
+4. **Content Strategy** (88/100)
+- Clarity of communication: 90/100
+- Appropriate level of detail: 85/100
+- Logical flow and structure: 90/100
+- Engaging narrative voice: 85/100
+- Technical depth vs accessibility: 90/100
+
+5. **Specific Strengths**
+- Excellent visual documentation of the search interface
+- Clear presentation of the problem space
+- Strong focus on user needs
+- Well-structured layout
+- Professional UI mockups
+
+6. **Areas for Improvement**
+- Could include more detailed user research findings
+- Impact metrics could be more comprehensive
+- More emphasis on technical constraints and solutions
+- Additional context about the competitive landscape
+
+7. **Actionable Recommendations**
+1. Add quantitative metrics about search success rates
+2. Include more details about technical implementation challenges
+3. Expand on the user testing process and findings
+
+8. **Competitive Analysis**
+This case study stands out for its professional presentation and clear focus on a specific problem. It compares favorably with industry standards, particularly in visual presentation and problem definition.
+
+9. **Overall Assessment** (88/100)
+This is a strong case study that effectively communicates the design process and solution. It demonstrates professional-level work with clear attention to detail and user needs. The visual presentation is particularly impressive, and the structure supports easy understanding of the project scope and outcomes.
+
+The case study successfully balances technical detail with accessibility, making it valuable for both technical and non-technical audiences. The focus on improving search functionality for auto mechanics shows good understanding of real-world UX challenges and solutions.
+                </div>
+              </div>
+            </div>
+          
+        
+
+        <!-- Technical Analysis & Screenshot -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
+          
+          <!-- Technical Analysis -->
+          <div class="technical-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+              <i class="fas fa-cogs"></i> Technical Analysis
+            </h3>
+            <div style="display: grid; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Problem Statement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Process Documentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Solution Presentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Impact Measurement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+            </div>
+          </div>
+
+          
+            <!-- Screenshot -->
+            <div class="screenshot-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-camera"></i> Case Study Screenshot
+              </h3>
+              <img src="reports/screenshots/case-study-1754455418301.png" style="width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" alt="Case study screenshot">
+            </div>
+          
+        </div>
+      </div>
+    
+      <div class="case-study-section " id="case-study-4" style="display: none;">
+        <div class="case-study-header-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+              <h2 style="font-size: 2.5em; margin-bottom: 15px; color: white;">ZS Persona | VyomikaParikh.com</h2>
+              <p style="font-size: 1.1em; opacity: 0.9; margin-bottom: 10px;">
+                <i class="fas fa-link"></i> 
+                <a href="https://www.vyomikaparikh.com/zs-persona" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;">
+                  https://www.vyomikaparikh.com/zs-persona
+                </a>
+              </p>
+              <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-file-alt"></i> 3759 words
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-images"></i> 12 images
+                </div>
+              </div>
+            </div>
+            
+            
+              <div style="text-align: center;">
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; min-width: 120px;">
+                  <div style="font-size: 3em; font-weight: bold; color: white; margin-bottom: 5px;">
+                    75
+                  </div>
+                  <div style="opacity: 0.9;">AI Overall Score</div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        
+          <!-- AI Analysis Grid -->
+          <div class="ai-analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            <!-- Project Overview -->
+            
+              <div class="analysis-card" style="background: #f8faff; border-left: 5px solid #667eea; padding: 25px; border-radius: 10px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.3em;">
+                  <i class="fas fa-project-diagram"></i> AI Analysis Status
+                </h3>
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <i class="fas fa-check-circle" style="color: #10b981; font-size: 1.2em;"></i>
+                  <span style="color: #333;">AI analysis completed - Individual case study insights processed</span>
+                </div>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                  Detailed insights including project overview, strengths, improvements, and recommendations are available in the raw AI analysis.
+                </p>
+              </div>
+            
+
+            <!-- Scoring Breakdown -->
+            <div class="scoring-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-chart-line"></i> AI Assessment Scores
+              </h3>
+              <div style="display: grid; gap: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0f9ff; border-radius: 8px;">
+                  <span style="font-weight: 500;">Storytelling</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #0369a1;">
+                    80/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0fdf4; border-radius: 8px;">
+                  <span style="font-weight: 500;">Visual Design</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #059669;">
+                    90/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fef3c7; border-radius: 8px;">
+                  <span style="font-weight: 500;">Content Strategy</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #d97706;">
+                    85/100
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Insights Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            
+
+            
+          </div>
+
+          
+
+          
+
+          
+
+          
+            <!-- Raw AI Analysis -->
+            <div class="raw-ai-section" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 30px;">
+              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #667eea; font-size: 1.4em;">
+                  <i class="fas fa-robot"></i> Complete AI Analysis
+                </h3>
+                <button onclick="toggleRawAnalysis(4)" style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                  <i class="fas fa-eye"></i> View Full Analysis
+                </button>
+              </div>
+              <div id="raw-analysis-4" style="display: none;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #667eea; font-family: monospace; white-space: pre-wrap; max-height: 500px; overflow-y: auto; line-height: 1.5;">
+                  Based on the provided case study information and image, I'll provide a detailed analysis:
+
+1. **Project Overview**
+This project involves creating a design system for personas at ZS Associates, focusing on standardizing how user personas are created and presented across the organization. The project aims to solve the challenge of maintaining consistency in persona development across a large consulting firm.
+
+2. **Storytelling Assessment** (75/100)
+- Problem Definition: 80/100 - Clear presentation of the need for standardized personas
+- Process Documentation: 70/100 - Shows methodology but could be more detailed
+- Solution Presentation: 75/100 - Good visualization of persona template
+- Impact Measurement: 70/100 - Could include more quantitative results
+- Personal Growth: 80/100 - Demonstrates learning through process
+
+3. **Visual Design Quality** (85/100)
+- Layout and hierarchy: 90/100 - Clean, professional layout
+- Visual consistency: 85/100 - Strong brand alignment
+- Use of imagery and mockups: 85/100 - High-quality persona example shown
+- Typography and readability: 85/100 - Clear typography choices
+- Professional presentation: 80/100 - Polished overall appearance
+
+4. **Content Strategy** (80/100)
+- Clarity of communication: 85/100 - Well-structured information
+- Appropriate level of detail: 75/100 - Good balance but could go deeper
+- Logical flow: 80/100 - Clear progression
+- Engaging narrative: 80/100 - Professional tone
+- Technical depth: 80/100 - Good balance of technical and accessible content
+
+5. **Specific Strengths**
+- Excellent visual presentation of persona template
+- Clear organization of information
+- Strong attention to detail in persona attributes
+- Professional visual design
+- Good balance of technical and business considerations
+
+6. **Areas for Improvement**
+- Could include more specific metrics about impact
+- More detail about the research process
+- Additional examples of personas in use
+- Deeper exploration of implementation challenges
+- More context about stakeholder collaboration
+
+7. **Actionable Recommendations**
+1. Add quantitative metrics about the system's impact
+2. Include more examples of the design system in use
+3. Expand on the research and validation process
+
+8. **Competitive Analysis**
+This case study is on par with industry standards, particularly strong in visual presentation but could be enhanced with more detailed impact metrics.
+
+9. **Overall Assessment** (80/100)
+A strong case study that effectively demonstrates the creation of a persona design system. The visual presentation is particularly strong, though it could benefit from more detailed impact metrics and implementation examples.
+
+The case study shows professional-level work with clear attention to detail and strong visual design principles. The persona template shown in the image demonstrates good information architecture and thoughtful organization of user attributes.
+                </div>
+              </div>
+            </div>
+          
+        
+
+        <!-- Technical Analysis & Screenshot -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
+          
+          <!-- Technical Analysis -->
+          <div class="technical-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+              <i class="fas fa-cogs"></i> Technical Analysis
+            </h3>
+            <div style="display: grid; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Problem Statement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Process Documentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Solution Presentation</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Impact Measurement</span>
+                <span style="font-size: 1.2em;">✅</span>
+              </div>
+            </div>
+          </div>
+
+          
+            <!-- Screenshot -->
+            <div class="screenshot-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-camera"></i> Case Study Screenshot
+              </h3>
+              <img src="reports/screenshots/case-study-1754455435110.png" style="width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" alt="Case study screenshot">
+            </div>
+          
+        </div>
+      </div>
+    
+                    
+                    <div class="case-study-summary card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-bar"></i> Case Study Summary</h3>
+                        </div>
+                        <div class="card-content">
+                            
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
+        <div style="text-align: center; padding: 20px; background: #f0f9ff; border-radius: 8px;">
+          <div style="font-size: 2em; font-weight: bold; color: #0369a1;">100</div>
+          <div>Avg Storytelling</div>
+        </div>
+        <div style="text-align: center; padding: 20px; background: #f0fdf4; border-radius: 8px;">
+          <div style="font-size: 2em; font-weight: bold; color: #059669;">95</div>
+          <div>Avg UX Score</div>
+        </div>
+      </div>
+      
+      
+        <div style="margin-bottom: 15px;">
+          <strong style="color: #4CAF50;">Common Strengths:</strong>
+          <ul><li>Excellent storytelling in case studies</li><li>Well-structured case study presentation</li></ul>
+        </div>
+      
+      
+      
+    
+                        </div>
+                    </div>
+                
+            </section>
+
+            <!-- AI Insights Section -->
+            <section id="ai-insights" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-brain"></i> AI-Powered Insights</h2>
+                    <p>Claude AI analysis and recommendations</p>
+                </div>
+                
+                
+                    <div class="ai-analysis-grid">
+                        
+          <div class="card">
+            <div class="card-header">
+              <h3>Visual Design (88/100)</h3>
+            </div>
+            <div class="card-content">
+              <p><strong>AI Feedback:</strong> The visual design shows strong professional judgment with its minimalist approach and thoughtful use of color blocking to create distinct sections. The typography choices create clear hierarchy, though there's room to optimize heading sizes for better scanability. The project cards maintain good consistency while the pastel color transitions between sections add visual interest without overwhelming the content.</p>
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #4CAF50;">Strengths:</strong>
+                  <ul><li>Clean, minimalist design approach</li><li>Effective use of white space</li><li>Strong color blocking to separate sections</li><li>Modern typography with good hierarchy</li><li>Consistent project card layout</li></ul>
+                </div>
+              
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #f44336;">Areas for Improvement:</strong>
+                  <ul><li>Limited visual differentiation between project types</li><li>Some sections feel slightly sparse</li><li>Heading sizes could be more optimized for scanning</li></ul>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <h3>User Experience (80/100)</h3>
+            </div>
+            <div class="card-content">
+              <p><strong>AI Feedback:</strong> The user experience prioritizes simplicity but could benefit from enhanced navigation options and more visual affordances. The consistent project card layout helps users quickly understand the content structure, though the single-page scroll design may make specific content harder to access quickly.</p>
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #4CAF50;">Strengths:</strong>
+                  <ul><li>Clear project categorization</li><li>Consistent card layout pattern</li><li>Good use of whitespace for readability</li></ul>
+                </div>
+              
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #f44336;">Areas for Improvement:</strong>
+                  <ul><li>Limited navigation options</li><li>Scroll-heavy single page design</li><li>Could use more visual cues for interaction</li></ul>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <h3>Content Strategy (85/100)</h3>
+            </div>
+            <div class="card-content">
+              <p><strong>AI Feedback:</strong> The content strategy effectively balances information density with visual appeal. The clear categorization helps visitors understand the scope of work, though adding more prominent calls-to-action and impact metrics could strengthen engagement.</p>
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #4CAF50;">Strengths:</strong>
+                  <ul><li>Clear project categorization (Live Product, Academic)</li><li>Concise project descriptions</li><li>Good balance of text and visuals</li></ul>
+                </div>
+              
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #f44336;">Areas for Improvement:</strong>
+                  <ul><li>Could use more prominent calls-to-action</li><li>Project impact metrics could be more visible</li><li>Limited preview content for projects</li></ul>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <h3>Technical Implementation (78/100)</h3>
+            </div>
+            <div class="card-content">
+              <p><strong>AI Feedback:</strong> The technical implementation shows attention to fundamentals with clean markup and responsive design. However, there's room for optimization in both performance and interactive features to create a more engaging experience.</p>
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #4CAF50;">Strengths:</strong>
+                  <ul><li>Clean, semantic markup</li><li>Responsive design implementation</li><li>Optimized image loading</li></ul>
+                </div>
+              
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #f44336;">Areas for Improvement:</strong>
+                  <ul><li>Some redundant div structures</li><li>Could improve performance optimization</li><li>Limited interactive features</li></ul>
+                </div>
+              
+            </div>
+          </div>
+        
+                    </div>
+                
+            </section>
+
+            <!-- Recommendations Section -->
+            <section id="recommendations" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-lightbulb"></i> Recommendations</h2>
+                    <p>Actionable improvements for better performance</p>
+                </div>
+                
+                <div class="recommendations-grid">
+                    
+          <div class="card">
+            <div class="card-header" style="background: #f44336; color: white;">
+              <h3>High Priority</h3>
+            </div>
+            <div class="card-content">
+              
+                <div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                  <strong>Navigation:</strong> Add a sticky navigation menu with quick links to main sections
+                  <div style="margin-top: 5px; font-size: 0.9em; color: #666;">
+                    <strong>Impact:</strong> Improved content accessibility and user orientation
+                  </div>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header" style="background: #FF9800; color: white;">
+              <h3>Medium Priority</h3>
+            </div>
+            <div class="card-content">
+              
+                <div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                  <strong>Visual Design:</strong> Enhance project cards with hover states and interaction feedback
+                  <div style="margin-top: 5px; font-size: 0.9em; color: #666;">
+                    <strong>Impact:</strong> Better engagement and clearer affordances
+                  </div>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header" style="background: #4CAF50; color: white;">
+              <h3>Long Term</h3>
+            </div>
+            <div class="card-content">
+              
+                <div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                  <strong>Content:</strong> Add case study preview content to project cards
+                  <div style="margin-top: 5px; font-size: 0.9em; color: #666;">
+                    <strong>Impact:</strong> Better information scent for detailed project pages
+                  </div>
+                </div>
+              
+            </div>
+          </div>
+        
+                </div>
+            </section>
+
+            <!-- Screenshots Section -->
+            <section id="screenshots" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-images"></i> Visual Documentation</h2>
+                    <p>Screenshots captured during analysis</p>
+                </div>
+                
+                <div class="screenshots-grid">
+                    
+      <div class="card">
+        <div class="card-header">
+          <h3>Homepage - Desktop</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">1920x1080 viewport</p>
+        </div>
+        <div class="card-content" style="padding: 0;">
+          <img src="reports/screenshots/screenshot-desktop-1754455330837.png" style="width: 100%; height: auto;" alt="Homepage - Desktop">
+        </div>
+      </div>
+    
+      <div class="card">
+        <div class="card-header">
+          <h3>Case Study - Habit Coach AI | VyomikaParikh.com</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">https://www.vyomikaparikh.com/project-habit-coach-ai</p>
+        </div>
+        <div class="card-content" style="padding: 0;">
+          <img src="reports/screenshots/case-study-1754455370084.png" style="width: 100%; height: auto;" alt="Case Study - Habit Coach AI | VyomikaParikh.com">
+        </div>
+      </div>
+    
+      <div class="card">
+        <div class="card-header">
+          <h3>Case Study - ZS ZAIDYN | VyomikaParikh.com</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">https://www.vyomikaparikh.com/zs-zaidyn</p>
+        </div>
+        <div class="card-content" style="padding: 0;">
+          <img src="reports/screenshots/case-study-1754455386562.png" style="width: 100%; height: auto;" alt="Case Study - ZS ZAIDYN | VyomikaParikh.com">
+        </div>
+      </div>
+    
+      <div class="card">
+        <div class="card-header">
+          <h3>Case Study - Jointhelp | VyomikaParikh.com</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">https://www.vyomikaparikh.com/jointhelp</p>
+        </div>
+        <div class="card-content" style="padding: 0;">
+          <img src="reports/screenshots/case-study-1754455402903.png" style="width: 100%; height: auto;" alt="Case Study - Jointhelp | VyomikaParikh.com">
+        </div>
+      </div>
+    
+      <div class="card">
+        <div class="card-header">
+          <h3>Case Study - Tata motors | VyomikaParikh.com</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">https://www.vyomikaparikh.com/tata-motors</p>
+        </div>
+        <div class="card-content" style="padding: 0;">
+          <img src="reports/screenshots/case-study-1754455418301.png" style="width: 100%; height: auto;" alt="Case Study - Tata motors | VyomikaParikh.com">
+        </div>
+      </div>
+    
+      <div class="card">
+        <div class="card-header">
+          <h3>Case Study - ZS Persona | VyomikaParikh.com</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">https://www.vyomikaparikh.com/zs-persona</p>
+        </div>
+        <div class="card-content" style="padding: 0;">
+          <img src="reports/screenshots/case-study-1754455435110.png" style="width: 100%; height: auto;" alt="Case Study - ZS Persona | VyomikaParikh.com">
+        </div>
+      </div>
+    
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Generated by Portfolio Agent • Powered by Claude AI • 8/5/2025</p>
+        </footer>
+    </div>
+
+    <script>
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active to selected nav button
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+        }
+
+        function expandCaseStudy(index) {
+            const details = document.getElementById(`case-study-details-${index}`);
+            const button = details.previousElementSibling.querySelector('.expand-btn');
+            
+            if (details.style.display === 'none' || !details.style.display) {
+                details.style.display = 'block';
+                button.innerHTML = '<i class="fas fa-chevron-up"></i> Show Less';
+            } else {
+                details.style.display = 'none';
+                button.innerHTML = '<i class="fas fa-chevron-down"></i> Show More';
+            }
+        }
+
+        function showCaseStudy(index) {
+            // Hide all case study sections
+            document.querySelectorAll('.case-study-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Remove active from all case study nav buttons
+            document.querySelectorAll('.case-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.background = 'white';
+                btn.style.color = '#667eea';
+            });
+            
+            // Show selected case study section
+            const targetSection = document.getElementById(`case-study-${index}`);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+            
+            // Add active to selected nav button
+            const activeBtn = document.querySelector(`[data-case="${index}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.style.background = '#667eea';
+                activeBtn.style.color = 'white';
+            }
+        }
+
+        function toggleRawAnalysis(index) {
+            const rawSection = document.getElementById(`raw-analysis-${index}`);
+            const button = event.target.closest('button');
+            
+            if (rawSection.style.display === 'none' || !rawSection.style.display) {
+                rawSection.style.display = 'block';
+                button.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Full Analysis';
+            } else {
+                rawSection.style.display = 'none';
+                button.innerHTML = '<i class="fas fa-eye"></i> View Full Analysis';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('overview');
+        });
+    
+    </script>
+</body>
+</html>

@@ -1,0 +1,1372 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Analysis - www.example.com</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+
+        .app {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 50px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+        }
+
+        .header-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5em;
+        }
+
+        .logo h1 {
+            font-size: 2em;
+            font-weight: 700;
+        }
+
+        .header-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .site-info h2 {
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+
+        .site-info a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+        }
+
+        .overall-score {
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .score-circle.excellent { background: linear-gradient(135deg, #4CAF50, #45a049); }
+        .score-circle.good { background: linear-gradient(135deg, #FF9800, #F57C00); }
+        .score-circle.needs-improvement { background: linear-gradient(135deg, #f44336, #d32f2f); }
+
+        .score-number {
+            font-size: 1.5em;
+        }
+
+        .score-label {
+            font-size: 0.8em;
+            opacity: 0.9;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        /* Navigation */
+        .nav {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            sticky: top 0;
+            z-index: 100;
+        }
+
+        .nav-content {
+            display: flex;
+            padding: 0 30px;
+            overflow-x: auto;
+        }
+
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 15px 20px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .nav-btn.active {
+            border-bottom-color: #667eea;
+            color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .badge {
+            background: #667eea;
+            color: white;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 0.8em;
+            margin-left: 5px;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 30px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+        }
+
+        .section-header h2 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .card-header h3 {
+            color: #333;
+            font-size: 1.2em;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        /* Grids */
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .case-studies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .recommendations-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .screenshots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        /* Score Card */
+        .score-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .score-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .score-card .score-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .score-card .score-title {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .score-card .score-description {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        /* Case Study Card */
+        .case-study-card {
+            border-left: 4px solid #667eea;
+        }
+
+        .case-study-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .case-study-title {
+            font-size: 1.3em;
+            color: #333;
+        }
+
+        .case-study-scores {
+            display: flex;
+            gap: 15px;
+        }
+
+        .mini-score {
+            text-align: center;
+            background: #f8f9fa;
+            padding: 5px 10px;
+            border-radius: 8px;
+        }
+
+        .mini-score-value {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .mini-score-label {
+            font-size: 0.8em;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        .responsive-preview {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .device-preview {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .device-header {
+            background: #333;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px 8px 0 0;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        .device-preview img {
+            width: 100%;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state i {
+            font-size: 4em;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .empty-state ul {
+            text-align: left;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+
+            .header-main {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .header-stats {
+                justify-content: center;
+            }
+
+            .main {
+                padding: 20px;
+            }
+
+            .nav-content {
+                padding: 0 20px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .responsive-preview {
+                flex-direction: column;
+            }
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="header-main">
+                    <div class="logo">
+                        <i class="fas fa-chart-line"></i>
+                        <h1>Portfolio Analyzer</h1>
+                    </div>
+                    <div class="header-info">
+                        <div class="site-info">
+                            <h2>www.example.com</h2>
+                            <p><i class="fas fa-link"></i> <a href="https://www.example.com" target="_blank">https://www.example.com</a></p>
+                        </div>
+                        <div class="overall-score">
+                            <div class="score-circle needs-improvement">
+                                <div class="score-number">45</div>
+                                <div class="score-label">Overall</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat">
+                        <i class="fas fa-desktop"></i>
+                        <span>Desktop & Mobile Tested</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-robot"></i>
+                        <span>AI Analyzed</span>
+                    </div>
+                    <div class="stat">
+                        <i class="fas fa-book"></i>
+                        <span>1 Case Studies</span>
+                    </div>
+                    <div class="stat">
+                        <i class="far fa-clock"></i>
+                        <span>8/6/2025</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <div class="nav-content">
+                <button class="nav-btn active" onclick="showSection('overview')" data-section="overview">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Overview</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('homepage')" data-section="homepage">
+                    <i class="fas fa-home"></i>
+                    <span>Homepage</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('casestudies')" data-section="casestudies">
+                    <i class="fas fa-book-open"></i>
+                    <span>Case Studies</span>
+                    <span class="badge">1</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('ai-insights')" data-section="ai-insights">
+                    <i class="fas fa-brain"></i>
+                    <span>AI Insights</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('recommendations')" data-section="recommendations">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Recommendations</span>
+                </button>
+                <button class="nav-btn" onclick="showSection('screenshots')" data-section="screenshots">
+                    <i class="fas fa-images"></i>
+                    <span>Screenshots</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Overview Section -->
+            <section id="overview" class="section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-tachometer-alt"></i> Performance Overview</h2>
+                    <p>Comprehensive analysis of www.example.com</p>
+                </div>
+                
+                <div class="score-grid">
+                    
+      <div class="score-card">
+        <div class="score-value" style="color: #f44336;">50</div>
+        <div class="score-title">Visual Design</div>
+        <div class="score-description">Clean, uncluttered layout</div>
+      </div>
+    
+      <div class="score-card">
+        <div class="score-value" style="color: #f44336;">40</div>
+        <div class="score-title">User Experience</div>
+        <div class="score-description">Fast loading time</div>
+      </div>
+    
+      <div class="score-card">
+        <div class="score-value" style="color: #f44336;">35</div>
+        <div class="score-title">Content Strategy</div>
+        <div class="score-description">Clear, concise messaging</div>
+      </div>
+    
+      <div class="score-card">
+        <div class="score-value" style="color: #f44336;">55</div>
+        <div class="score-title">Technical Implementation</div>
+        <div class="score-description">Clean HTML structure</div>
+      </div>
+    
+      <div class="score-card">
+        <div class="score-value" style="color: #FF9800;">70</div>
+        <div class="score-title">Accessibility</div>
+        <div class="score-description">WCAG AA compliant contrast</div>
+      </div>
+    
+      <div class="score-card">
+        <div class="score-value" style="color: #f44336;">30</div>
+        <div class="score-title">Storytelling</div>
+        <div class="score-description">Clear primary message</div>
+      </div>
+    
+                </div>
+
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-pie"></i> Executive Summary</h3>
+                        </div>
+                        <div class="card-content">
+                            <p>This is an extremely minimal implementation that, while clean and accessible, lacks the depth and features expected of a professional portfolio website. The site requires substantial development across all areas to function as an effective portfolio.</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-trophy"></i> Key Strengths</h3>
+                        </div>
+                        <div class="card-content">
+                            <ul><li>Clean, uncluttered layout</li><li>Consistent typography with system fonts</li><li>Appropriate contrast ratios</li></ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Homepage Section -->
+            <section id="homepage" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-home"></i> Homepage Analysis</h2>
+                    <p>First impression and main page evaluation</p>
+                </div>
+                
+                <div class="content-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-eye"></i> Visual Design</h3>
+                        </div>
+                        <div class="card-content">
+                            
+      <div class="homepage-metrics">
+        <div style="display: grid; gap: 15px;">
+          <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+            <span>Visual Appeal</span>
+            <span style="color: #4CAF50; font-weight: bold;">Excellent</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+            <span>Content Clarity</span>
+            <span style="color: #4CAF50; font-weight: bold;">Good</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 10px; background: #f8f9fa; border-radius: 5px;">
+            <span>Navigation</span>
+            <span style="color: #FF9800; font-weight: bold;">Needs Improvement</span>
+          </div>
+        </div>
+      </div>
+    
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-mobile-alt"></i> Responsive Design</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="responsive-preview">
+                                
+                                    <div class="device-preview desktop">
+                                        <div class="device-header">Desktop (1920x1080)</div>
+                                        <img src="reports/screenshots/screenshot-desktop-1754464687698.png" alt="Desktop screenshot">
+                                    </div>
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Case Studies Section -->
+            <section id="casestudies" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-book-open"></i> Case Studies Analysis</h2>
+                    <p>1 case studies found and analyzed</p>
+                </div>
+                
+                
+                    <!-- Case Study Navigation -->
+                    <div class="case-study-nav" style="margin-bottom: 30px;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                            
+                                <button onclick="showCaseStudy(0)" class="case-nav-btn active" data-case="0" style="
+                                    padding: 10px 20px; 
+                                    border: 2px solid #667eea; 
+                                    background: #667eea; 
+                                    color: white; 
+                                    border-radius: 25px; 
+                                    cursor: pointer; 
+                                    font-weight: 500;
+                                    transition: all 0.3s ease;
+                                ">
+                                    Example Domains
+                                </button>
+                            
+                        </div>
+                    </div>
+
+                    <!-- Individual Case Study Sections -->
+                    
+      <div class="case-study-section active" id="case-study-0" style="display: block;">
+        <div class="case-study-header-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 15px; margin-bottom: 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 300px;">
+              <h2 style="font-size: 2.5em; margin-bottom: 15px; color: white;">Example Domains</h2>
+              <p style="font-size: 1.1em; opacity: 0.9; margin-bottom: 10px;">
+                <i class="fas fa-link"></i> 
+                <a href="https://www.iana.org/domains/example" target="_blank" style="color: rgba(255,255,255,0.9); text-decoration: none;">
+                  https://www.iana.org/domains/example
+                </a>
+              </p>
+              <div style="display: flex; gap: 15px; margin-top: 20px;">
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-file-alt"></i> 1211 words
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 10px 15px; border-radius: 8px;">
+                  <i class="fas fa-images"></i> 1 images
+                </div>
+              </div>
+            </div>
+            
+            
+              <div style="text-align: center;">
+                <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 15px; min-width: 120px;">
+                  <div style="font-size: 3em; font-weight: bold; color: white; margin-bottom: 5px;">
+                    25
+                  </div>
+                  <div style="opacity: 0.9;">AI Overall Score</div>
+                </div>
+              </div>
+            
+          </div>
+        </div>
+
+        
+          <!-- AI Analysis Grid -->
+          <div class="ai-analysis-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            <!-- Project Overview -->
+            
+              <div class="analysis-card" style="background: #f8faff; border-left: 5px solid #667eea; padding: 25px; border-radius: 10px;">
+                <h3 style="color: #667eea; margin-bottom: 15px; font-size: 1.3em;">
+                  <i class="fas fa-project-diagram"></i> Project Overview
+                </h3>
+                <p style="line-height: 1.6; color: #333;">This appears to be a technical documentation page about example domains rather than a UX case study. It's currently formatted as an informational page explaining IANA's example domains policy.
+
+2. **</p>
+              </div>
+            
+
+            <!-- Scoring Breakdown -->
+            <div class="scoring-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-chart-line"></i> AI Assessment Scores
+              </h3>
+              <div style="display: grid; gap: 15px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0f9ff; border-radius: 8px;">
+                  <span style="font-weight: 500;">Storytelling</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #0369a1;">
+                    15/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f0fdf4; border-radius: 8px;">
+                  <span style="font-weight: 500;">Visual Design</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #059669;">
+                    30/100
+                  </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #fef3c7; border-radius: 8px;">
+                  <span style="font-weight: 500;">Content Strategy</span>
+                  <span style="font-size: 1.2em; font-weight: bold; color: #d97706;">
+                    40/100
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Key Insights Grid -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; margin-bottom: 30px;">
+            
+            
+              <div class="insights-card" style="background: #f0fdf4; border-radius: 10px; padding: 25px; border-left: 5px solid #10b981;">
+                <h3 style="color: #059669; margin-bottom: 20px; font-size: 1.3em;">
+                  <i class="fas fa-thumbs-up"></i> Key Strengths
+                </h3>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      Clear technical writing
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      Organized information
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      Clean, functional layout
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-check-circle" style="position: absolute; left: 0; top: 2px; color: #10b981;"></i>
+                      **
+                    </li>
+                  
+                </ul>
+              </div>
+            
+
+            
+              <div class="insights-card" style="background: #fef2f2; border-radius: 10px; padding: 25px; border-left: 5px solid #ef4444;">
+                <h3 style="color: #dc2626; margin-bottom: 20px; font-size: 1.3em;">
+                  <i class="fas fa-arrow-up"></i> Areas for Improvement
+                </h3>
+                <ul style="list-style: none; padding: 0; margin: 0;">
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      Needs complete transformation into case study format
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      Lacks design process documentation
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      Missing visual examples of work
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      No user research or problem-solving narrative
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      Absent success metrics
+                    </li>
+                  
+                    <li style="margin-bottom: 12px; padding-left: 25px; position: relative; line-height: 1.5;">
+                      <i class="fas fa-exclamation-triangle" style="position: absolute; left: 0; top: 2px; color: #ef4444;"></i>
+                      **
+                    </li>
+                  
+                </ul>
+              </div>
+            
+          </div>
+
+          
+            <!-- Actionable Recommendations -->
+            <div class="recommendations-section" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 30px;">
+              <h3 style="color: #667eea; margin-bottom: 25px; font-size: 1.4em;">
+                <i class="fas fa-lightbulb"></i> Actionable Recommendations
+              </h3>
+              <div style="display: grid; gap: 20px;">
+                
+                  <div style="background: #f8f9ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px;">
+                    <div style="display: flex; align-items: flex-start; gap: 15px;">
+                      <div style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">
+                        1
+                      </div>
+                      <div style="flex: 1;">
+                        <p style="margin: 0; line-height: 1.6; font-weight: 500;">Reframe as a UX case study showing how you improved technical documentation</p>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div style="background: #f8f9ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px;">
+                    <div style="display: flex; align-items: flex-start; gap: 15px;">
+                      <div style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">
+                        2
+                      </div>
+                      <div style="flex: 1;">
+                        <p style="margin: 0; line-height: 1.6; font-weight: 500;">Add process sections: Research, Information Architecture, User Testing</p>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div style="background: #f8f9ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px;">
+                    <div style="display: flex; align-items: flex-start; gap: 15px;">
+                      <div style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">
+                        3
+                      </div>
+                      <div style="flex: 1;">
+                        <p style="margin: 0; line-height: 1.6; font-weight: 500;">Include before/after designs and user feedback</p>
+                      </div>
+                    </div>
+                  </div>
+                
+                  <div style="background: #f8f9ff; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px;">
+                    <div style="display: flex; align-items: flex-start; gap: 15px;">
+                      <div style="background: #667eea; color: white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">
+                        4
+                      </div>
+                      <div style="flex: 1;">
+                        <p style="margin: 0; line-height: 1.6; font-weight: 500;">**</p>
+                      </div>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+          
+
+          
+            <!-- Competitive Analysis -->
+            <div class="competitive-section" style="background: #faf5ff; border-radius: 10px; padding: 25px; margin-bottom: 30px; border-left: 5px solid #8b5cf6;">
+              <h3 style="color: #8b5cf6; margin-bottom: 15px; font-size: 1.3em;">
+                <i class="fas fa-chart-bar"></i> Competitive Analysis
+              </h3>
+              <p style="line-height: 1.6; color: #333;">This currently doesn't compete as a UX case study. Industry standards include:
+- Clear problem statements
+- Detailed design process
+- Visual documentation
+- Measurable outcomes
+- Personal learnings
+
+9. **</p>
+            </div>
+          
+
+          
+            <!-- Overall Assessment -->
+            <div class="assessment-section" style="background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%); border-radius: 15px; padding: 30px; margin-bottom: 30px; border: 1px solid #e5e7eb;">
+              <h3 style="color: #1f2937; margin-bottom: 20px; font-size: 1.4em;">
+                <i class="fas fa-clipboard-check"></i> AI Overall Assessment
+              </h3>
+              <div style="background: white; padding: 25px; border-radius: 10px; border-left: 4px solid #6b7280;">
+                <p style="line-height: 1.6; margin: 0; color: #374151; font-size: 1.1em;">25/100):
+This appears to be a technical documentation page mistakenly submitted as a UX case study. To function as a portfolio piece, it needs complete restructuring to demonstrate UX problem-solving skills and design process.
+
+Key Next Steps:
+1. Transform into proper case study format
+2. Document design process and decisions
+3. Add visual evidence of work
+4. Include user research and testing
+5. Show measurable impact
+6. Add personal reflection
+
+The current content could be valuable as part of a larger case study about improving technical documentation user experience, but needs significant development to serve as a portfolio piece.</p>
+              </div>
+            </div>
+          
+
+          
+            <!-- Raw AI Analysis -->
+            <div class="raw-ai-section" style="background: white; border-radius: 15px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin-bottom: 30px;">
+              <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
+                <h3 style="color: #667eea; font-size: 1.4em;">
+                  <i class="fas fa-robot"></i> Complete AI Analysis
+                </h3>
+                <button onclick="toggleRawAnalysis(0)" style="background: #667eea; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
+                  <i class="fas fa-eye"></i> View Full Analysis
+                </button>
+              </div>
+              <div id="raw-analysis-0" style="display: none;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #667eea; font-family: monospace; white-space: pre-wrap; max-height: 500px; overflow-y: auto; line-height: 1.5;">
+                  Based on the provided case study, here's a detailed UX portfolio review:
+
+1. **Project Overview**:
+This appears to be a technical documentation page about example domains rather than a UX case study. It's currently formatted as an informational page explaining IANA's example domains policy.
+
+2. **Storytelling Assessment** (Score: 15/100):
+- Problem Definition: 10/100 (No clear UX problem statement)
+- Process Documentation: 0/100 (No design process shown)
+- Solution Presentation: 20/100 (Basic information presentation only)
+- Impact Measurement: 0/100 (No metrics or results)
+- Personal Growth: 0/100 (No reflection included)
+
+3. **Visual Design Quality** (Score: 30/100):
+- Layout: Basic, minimal hierarchy
+- Visual consistency: Consistent but basic
+- Imagery: Limited to logo only
+- Typography: Standard web typography
+- Professional presentation: Functional but lacks portfolio-quality presentation
+
+4. **Content Strategy** (Score: 40/100):
+- Clarity: Clear technical writing
+- Detail level: Appropriate for technical documentation
+- Structure: Basic information hierarchy
+- Voice: Technical, formal
+- Technical depth: Good for documentation, inappropriate for portfolio
+
+5. **Specific Strengths**:
+- Clear technical writing
+- Organized information
+- Clean, functional layout
+
+6. **Areas for Improvement**:
+- Needs complete transformation into case study format
+- Lacks design process documentation
+- Missing visual examples of work
+- No user research or problem-solving narrative
+- Absent success metrics
+
+7. **Actionable Recommendations**:
+1. Reframe as a UX case study showing how you improved technical documentation
+2. Add process sections: Research, Information Architecture, User Testing
+3. Include before/after designs and user feedback
+
+8. **Competitive Analysis**:
+This currently doesn't compete as a UX case study. Industry standards include:
+- Clear problem statements
+- Detailed design process
+- Visual documentation
+- Measurable outcomes
+- Personal learnings
+
+9. **Overall Assessment** (Score: 25/100):
+This appears to be a technical documentation page mistakenly submitted as a UX case study. To function as a portfolio piece, it needs complete restructuring to demonstrate UX problem-solving skills and design process.
+
+Key Next Steps:
+1. Transform into proper case study format
+2. Document design process and decisions
+3. Add visual evidence of work
+4. Include user research and testing
+5. Show measurable impact
+6. Add personal reflection
+
+The current content could be valuable as part of a larger case study about improving technical documentation user experience, but needs significant development to serve as a portfolio piece.
+                </div>
+              </div>
+            </div>
+          
+        
+
+        <!-- Technical Analysis & Screenshot -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px;">
+          
+          <!-- Technical Analysis -->
+          <div class="technical-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+              <i class="fas fa-cogs"></i> Technical Analysis
+            </h3>
+            <div style="display: grid; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Problem Statement</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Process Documentation</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Solution Presentation</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: #f8f9fa; border-radius: 6px;">
+                <span>Impact Measurement</span>
+                <span style="font-size: 1.2em;">❌</span>
+              </div>
+            </div>
+          </div>
+
+          
+            <!-- Screenshot -->
+            <div class="screenshot-card" style="background: white; border-radius: 10px; padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <h3 style="color: #333; margin-bottom: 20px; font-size: 1.3em;">
+                <i class="fas fa-camera"></i> Case Study Screenshot
+              </h3>
+              <img src="reports/screenshots/case-study-1754464729125.png" style="width: 100%; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" alt="Case study screenshot">
+            </div>
+          
+        </div>
+      </div>
+    
+                    
+                    <div class="case-study-summary card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-bar"></i> Case Study Summary</h3>
+                        </div>
+                        <div class="card-content">
+                            
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 20px;">
+        <div style="text-align: center; padding: 20px; background: #f0f9ff; border-radius: 8px;">
+          <div style="font-size: 2em; font-weight: bold; color: #0369a1;">50</div>
+          <div>Avg Storytelling</div>
+        </div>
+        <div style="text-align: center; padding: 20px; background: #f0fdf4; border-radius: 8px;">
+          <div style="font-size: 2em; font-weight: bold; color: #059669;">50</div>
+          <div>Avg UX Score</div>
+        </div>
+      </div>
+      
+      
+      
+      
+        <div style="margin-bottom: 15px;">
+          <strong style="color: #f44336;">Areas for Improvement:</strong>
+          <ul><li>Case studies lack compelling narrative structure</li><li>Case studies could be better organized for readability</li></ul>
+        </div>
+      
+    
+                        </div>
+                    </div>
+                
+            </section>
+
+            <!-- AI Insights Section -->
+            <section id="ai-insights" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-brain"></i> AI-Powered Insights</h2>
+                    <p>Claude AI analysis and recommendations</p>
+                </div>
+                
+                
+                    <div class="ai-analysis-grid">
+                        
+          <div class="card">
+            <div class="card-header">
+              <h3>Visual Design (50/100)</h3>
+            </div>
+            <div class="card-content">
+              <p><strong>AI Feedback:</strong> The current design is extremely minimal to the point of being incomplete for portfolio purposes. While the basic layout principles are sound, the site needs substantial visual elements, portfolio-specific sections, and brand identity components to function effectively.</p>
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #4CAF50;">Strengths:</strong>
+                  <ul><li>Clean, uncluttered layout</li><li>Consistent typography with system fonts</li><li>Appropriate contrast ratios</li><li>Harmonious color palette</li></ul>
+                </div>
+              
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #f44336;">Areas for Improvement:</strong>
+                  <ul><li>Lacks visual hierarchy beyond basic heading</li><li>No visual elements or imagery</li><li>Missing portfolio-specific design elements</li><li>No brand identity elements</li></ul>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <h3>User Experience (40/100)</h3>
+            </div>
+            <div class="card-content">
+              <p><strong>AI Feedback:</strong> The user experience is severely limited by the lack of portfolio-specific features and navigation. Users have no way to explore work samples, read about the designer, or contact them.</p>
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #4CAF50;">Strengths:</strong>
+                  <ul><li>Fast loading time</li><li>Clear readability</li><li>Simple navigation path</li></ul>
+                </div>
+              
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #f44336;">Areas for Improvement:</strong>
+                  <ul><li>No portfolio navigation structure</li><li>Missing key UX patterns for portfolios</li><li>No clear user journey or flow</li><li>Lack of interactive elements</li></ul>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <h3>Content Strategy (35/100)</h3>
+            </div>
+            <div class="card-content">
+              <p><strong>AI Feedback:</strong> The content strategy is essentially nonexistent for portfolio purposes. The site needs comprehensive content including work samples, case studies, professional background, and contact information.</p>
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #4CAF50;">Strengths:</strong>
+                  <ul><li>Clear, concise messaging</li><li>No unnecessary content</li></ul>
+                </div>
+              
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #f44336;">Areas for Improvement:</strong>
+                  <ul><li>Missing all portfolio content</li><li>No case studies or work samples</li><li>No about section or contact information</li><li>Lack of professional context</li></ul>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <h3>Technical Implementation (55/100)</h3>
+            </div>
+            <div class="card-content">
+              <p><strong>AI Feedback:</strong> While the technical foundation is sound, the implementation lacks the sophisticated features and functionality expected in a modern portfolio site.</p>
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #4CAF50;">Strengths:</strong>
+                  <ul><li>Clean HTML structure</li><li>Proper heading hierarchy</li><li>Mobile-responsive viewport</li><li>Fast performance</li></ul>
+                </div>
+              
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #f44336;">Areas for Improvement:</strong>
+                  <ul><li>No advanced functionality</li><li>Missing portfolio-specific features</li><li>Limited technical sophistication</li><li>No analytics or tracking</li></ul>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <h3>Accessibility (70/100)</h3>
+            </div>
+            <div class="card-content">
+              <p><strong>AI Feedback:</strong> Basic accessibility principles are followed, but additional features would enhance accessibility for a full portfolio site.</p>
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #4CAF50;">Strengths:</strong>
+                  <ul><li>WCAG AA compliant contrast</li><li>Proper heading structure</li><li>Clean semantic markup</li><li>System fonts for readability</li></ul>
+                </div>
+              
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #f44336;">Areas for Improvement:</strong>
+                  <ul><li>Limited navigation options</li><li>No skip links</li><li>Missing ARIA labels</li><li>No keyboard navigation enhancement</li></ul>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header">
+              <h3>Storytelling (30/100)</h3>
+            </div>
+            <div class="card-content">
+              <p><strong>AI Feedback:</strong> The site currently tells no professional story and needs complete development of narrative elements to function as a portfolio.</p>
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #4CAF50;">Strengths:</strong>
+                  <ul><li>Clear primary message</li><li>Direct communication style</li></ul>
+                </div>
+              
+              
+                <div style="margin-top: 15px;">
+                  <strong style="color: #f44336;">Areas for Improvement:</strong>
+                  <ul><li>No personal narrative</li><li>Missing portfolio story elements</li><li>No demonstration of process or impact</li><li>Lack of professional journey content</li></ul>
+                </div>
+              
+            </div>
+          </div>
+        
+                    </div>
+                
+            </section>
+
+            <!-- Recommendations Section -->
+            <section id="recommendations" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-lightbulb"></i> Recommendations</h2>
+                    <p>Actionable improvements for better performance</p>
+                </div>
+                
+                <div class="recommendations-grid">
+                    
+          <div class="card">
+            <div class="card-header" style="background: #f44336; color: white;">
+              <h3>High Priority</h3>
+            </div>
+            <div class="card-content">
+              
+                <div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                  <strong>Content:</strong> Add essential portfolio sections including work samples, about page, and contact information
+                  <div style="margin-top: 5px; font-size: 0.9em; color: #666;">
+                    <strong>Impact:</strong> Establish basic portfolio functionality
+                  </div>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header" style="background: #FF9800; color: white;">
+              <h3>Medium Priority</h3>
+            </div>
+            <div class="card-content">
+              
+                <div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                  <strong>Navigation:</strong> Implement main navigation with key portfolio sections
+                  <div style="margin-top: 5px; font-size: 0.9em; color: #666;">
+                    <strong>Impact:</strong> Enable user exploration of portfolio content
+                  </div>
+                </div>
+              
+            </div>
+          </div>
+        
+          <div class="card">
+            <div class="card-header" style="background: #4CAF50; color: white;">
+              <h3>Long Term</h3>
+            </div>
+            <div class="card-content">
+              
+                <div style="margin-bottom: 15px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                  <strong>Enhancement:</strong> Add interactive features and animations to enhance engagement
+                  <div style="margin-top: 5px; font-size: 0.9em; color: #666;">
+                    <strong>Impact:</strong> Improve user engagement and modern feel
+                  </div>
+                </div>
+              
+            </div>
+          </div>
+        
+                </div>
+            </section>
+
+            <!-- Screenshots Section -->
+            <section id="screenshots" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-images"></i> Visual Documentation</h2>
+                    <p>Screenshots captured during analysis</p>
+                </div>
+                
+                <div class="screenshots-grid">
+                    
+      <div class="card">
+        <div class="card-header">
+          <h3>Homepage - Desktop</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">1920x1080 viewport</p>
+        </div>
+        <div class="card-content" style="padding: 0;">
+          <img src="reports/screenshots/screenshot-desktop-1754464687698.png" style="width: 100%; height: auto;" alt="Homepage - Desktop">
+        </div>
+      </div>
+    
+      <div class="card">
+        <div class="card-header">
+          <h3>Case Study - Example Domains</h3>
+          <p style="margin: 5px 0 0 0; font-size: 0.9em; color: #666;">https://www.iana.org/domains/example</p>
+        </div>
+        <div class="card-content" style="padding: 0;">
+          <img src="reports/screenshots/case-study-1754464729125.png" style="width: 100%; height: auto;" alt="Case Study - Example Domains">
+        </div>
+      </div>
+    
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Generated by Portfolio Agent • Powered by Claude AI • 8/6/2025</p>
+        </footer>
+    </div>
+
+    <script>
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active from all nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active to selected nav button
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+        }
+
+        function expandCaseStudy(index) {
+            const details = document.getElementById(`case-study-details-${index}`);
+            const button = details.previousElementSibling.querySelector('.expand-btn');
+            
+            if (details.style.display === 'none' || !details.style.display) {
+                details.style.display = 'block';
+                button.innerHTML = '<i class="fas fa-chevron-up"></i> Show Less';
+            } else {
+                details.style.display = 'none';
+                button.innerHTML = '<i class="fas fa-chevron-down"></i> Show More';
+            }
+        }
+
+        function showCaseStudy(index) {
+            // Hide all case study sections
+            document.querySelectorAll('.case-study-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Remove active from all case study nav buttons
+            document.querySelectorAll('.case-nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.background = 'white';
+                btn.style.color = '#667eea';
+            });
+            
+            // Show selected case study section
+            const targetSection = document.getElementById(`case-study-${index}`);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+            
+            // Add active to selected nav button
+            const activeBtn = document.querySelector(`[data-case="${index}"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.style.background = '#667eea';
+                activeBtn.style.color = 'white';
+            }
+        }
+
+        function toggleRawAnalysis(index) {
+            const rawSection = document.getElementById(`raw-analysis-${index}`);
+            const button = event.target.closest('button');
+            
+            if (rawSection.style.display === 'none' || !rawSection.style.display) {
+                rawSection.style.display = 'block';
+                button.innerHTML = '<i class="fas fa-eye-slash"></i> Hide Full Analysis';
+            } else {
+                rawSection.style.display = 'none';
+                button.innerHTML = '<i class="fas fa-eye"></i> View Full Analysis';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            showSection('overview');
+        });
+    
+    </script>
+</body>
+</html>

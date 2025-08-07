@@ -1,0 +1,45 @@
+{
+  "name": "portfolio-agent",
+  "version": "1.0.0",
+  "description": "AI-powered design portfolio evaluation system",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "server": "node server.js",
+    "test": "playwright test",
+    "evaluate": "node src/evaluate.js",
+    "report": "node src/reporters/generate-report.js",
+    "setup": "node scripts/setup.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.57.0",
+    "@playwright/test": "^1.40.0",
+    "axe-core": "^4.8.0",
+    "cheerio": "^1.0.0-rc.12",
+    "color": "^4.2.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^4.18.2",
+    "fs-extra": "^11.1.1",
+    "lighthouse": "^11.0.0",
+    "multer": "^1.4.5-lts.1",
+    "playwright": "^1.40.0",
+    "sharp": "^0.32.0",
+    "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "eslint": "^8.50.0",
+    "prettier": "^3.0.0"
+  },
+  "keywords": [
+    "design",
+    "portfolio",
+    "evaluation",
+    "playwright",
+    "mcp",
+    "automation"
+  ],
+  "author": "Portfolio Agent Team",
+  "license": "MIT"
+}
