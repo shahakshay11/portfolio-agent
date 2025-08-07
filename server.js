@@ -14,8 +14,19 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/reports', express.static(path.join(__dirname, 'reports')));
-app.use(express.static(path.join(__dirname, 'public')));
+// Ensure directories exist and serve static files
+const reportsDir = path.join(__dirname, 'reports');
+const publicDir = path.join(__dirname, 'public');
+
+console.log('Server starting from:', __dirname);
+console.log('Reports directory:', reportsDir, '- exists:', fs.existsSync(reportsDir));
+console.log('Public directory:', publicDir, '- exists:', fs.existsSync(publicDir));
+
+// Ensure reports directory exists
+fs.ensureDirSync(reportsDir);
+
+app.use('/reports', express.static(reportsDir));
+app.use(express.static(publicDir));
 
 // Store active analyses
 const activeAnalyses = new Map();
@@ -44,7 +55,22 @@ function getCategoryFromMessage(message) {
 
 // Routes
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  const indexPath = path.join(__dirname, 'public', 'index.html');
+  console.log('Looking for index.html at:', indexPath);
+  
+  // Check if file exists before trying to send it
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    console.error('index.html not found at:', indexPath);
+    res.status(500).send(`
+      <h1>Portfolio Analyzer</h1>
+      <p>Error: Static files not found. Please check deployment configuration.</p>
+      <p>Looking for: ${indexPath}</p>
+      <p>Current directory: ${__dirname}</p>
+      <p>Directory contents: ${fs.readdirSync(__dirname).join(', ')}</p>
+    `);
+  }
 });
 
 // Start portfolio analysis
