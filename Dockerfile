@@ -1,48 +1,21 @@
-# Use Node.js with Ubuntu for Playwright compatibility
-FROM node:18-bullseye-slim
-
-# Install system dependencies required by Playwright
-RUN apt-get update && apt-get install -y \
-    wget \
-    gnupg \
-    ca-certificates \
-    procps \
-    libxss1 \
-    libgconf-2-4 \
-    libxtst6 \
-    libxrandr2 \
-    libasound2 \
-    libpangocairo-1.0-0 \
-    libatk1.0-0 \
-    libcairo-gobject2 \
-    libgtk-3-0 \
-    libgdk-pixbuf2.0-0 \
-    libxcomposite1 \
-    libxcursor1 \
-    libxdamage1 \
-    libxi6 \
-    libxtst6 \
-    libnss3 \
-    libcups2 \
-    libxss1 \
-    libxrandr2 \
-    libgconf-2-4 \
-    libxss1 \
-    libgconf-2-4 \
-    && rm -rf /var/lib/apt/lists/*
+# Use the official Playwright Docker image which has everything pre-installed
+FROM mcr.microsoft.com/playwright:v1.40.0-focal
 
 # Set working directory
 WORKDIR /app
 
-# Copy package files
+# Copy package files first for better Docker caching
 COPY package*.json ./
 
 # Install npm dependencies
 RUN npm ci --only=production
 
-# Install Playwright and browsers
-RUN npx playwright install chromium
-RUN npx playwright install-deps
+# Verify Playwright installation
+RUN npx playwright --version
+RUN ls -la /ms-playwright/chromium-*/ || echo "Browser path check failed"
+
+# Set Playwright browsers path (required for the official image)
+ENV PLAYWRIGHT_BROWSERS_PATH=/ms-playwright
 
 # Copy application code
 COPY . .
