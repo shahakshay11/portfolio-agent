@@ -1,7 +1,7 @@
 services:
   - type: web
     name: portfolio-agent
-    env: node
+    runtime: node
     plan: free
     buildCommand: npm install && npx playwright install --with-deps chromium && ls -la public/
     startCommand: npm start
@@ -9,15 +9,6 @@ services:
       - key: NODE_ENV
         value: production
       - key: RENDER
-        value: true
-      - key: PORT
-        fromService: 
-          type: web
-          name: portfolio-agent
-          property: port
+        value: "true"
     autoDeploy: true
     healthCheckPath: /api/health
-    disk:
-      name: portfolio-agent-disk
-      mountPath: /opt/render/project/reports
-      sizeGB: 1

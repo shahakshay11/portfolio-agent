@@ -15,12 +15,29 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 // Ensure directories exist and serve static files
-const reportsDir = path.join(__dirname, 'reports');
-const publicDir = path.join(__dirname, 'public');
+// Handle different deployment environments (local vs Render)
+const baseDir = process.cwd(); // Use current working directory instead of __dirname
+const reportsDir = path.join(baseDir, 'reports');
+const publicDir = path.join(baseDir, 'public');
 
-console.log('Server starting from:', __dirname);
+console.log('Server starting from __dirname:', __dirname);
+console.log('Process working directory:', process.cwd());
+console.log('Base directory for static files:', baseDir);
 console.log('Reports directory:', reportsDir, '- exists:', fs.existsSync(reportsDir));
 console.log('Public directory:', publicDir, '- exists:', fs.existsSync(publicDir));
+
+// Debug: List contents of base directory
+try {
+  const baseContents = fs.readdirSync(baseDir);
+  console.log('Base directory contents:', baseContents.join(', '));
+  
+  if (fs.existsSync(publicDir)) {
+    const publicContents = fs.readdirSync(publicDir);
+    console.log('Public directory contents:', publicContents.join(', '));
+  }
+} catch (error) {
+  console.error('Error reading directories:', error.message);
+}
 
 // Ensure reports directory exists
 fs.ensureDirSync(reportsDir);
@@ -55,7 +72,7 @@ function getCategoryFromMessage(message) {
 
 // Routes
 app.get('/', (req, res) => {
-  const indexPath = path.join(__dirname, 'public', 'index.html');
+  const indexPath = path.join(publicDir, 'index.html');
   console.log('Looking for index.html at:', indexPath);
   
   // Check if file exists before trying to send it
@@ -67,8 +84,10 @@ app.get('/', (req, res) => {
       <h1>Portfolio Analyzer</h1>
       <p>Error: Static files not found. Please check deployment configuration.</p>
       <p>Looking for: ${indexPath}</p>
-      <p>Current directory: ${__dirname}</p>
-      <p>Directory contents: ${fs.readdirSync(__dirname).join(', ')}</p>
+      <p>__dirname: ${__dirname}</p>
+      <p>process.cwd(): ${process.cwd()}</p>
+      <p>publicDir: ${publicDir}</p>
+      <p>Base directory contents: ${fs.readdirSync(baseDir).join(', ')}</p>
     `);
   }
 });
