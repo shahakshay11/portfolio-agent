@@ -18,11 +18,12 @@ app.use(express.urlencoded({ extended: true }));
 // Handle different deployment environments (local vs Render)
 // Try multiple possible locations for the files
 const possibleBaseDirs = [
-  __dirname,                    // Current directory (local)
-  process.cwd(),               // Process working directory  
-  path.dirname(__dirname),     // Parent directory (if server.js is in subdirectory)
-  '/opt/render/project/src',   // Render project root
-  '/opt/render/project'        // Render alternative
+  __dirname,                           // Current directory (local)  
+  process.cwd(),                      // Process working directory
+  path.dirname(__dirname),            // Parent directory if running from subdirectory
+  '/opt/render/project/src',          // Render current location
+  '/opt/render/project',              // Render project root
+  path.join(process.cwd(), '..'),     // Parent of current working directory
 ];
 
 let baseDir = __dirname; // Default

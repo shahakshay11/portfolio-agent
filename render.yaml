@@ -3,6 +3,7 @@ services:
     name: portfolio-agent
     runtime: node
     plan: free
+    rootDir: .
     buildCommand: npm install && npx playwright install --with-deps chromium && echo "=== Build directory structure ===" && pwd && ls -la && echo "=== Public directory ===" && ls -la public/ && echo "=== Finished build ==="
     startCommand: npm start
     envVars:
