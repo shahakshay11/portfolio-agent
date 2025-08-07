@@ -76,8 +76,9 @@ app.post('/api/analyze', async (req, res) => {
       results: null
     });
 
-    // Start the analysis process
-    const child = spawn('npm', ['run', 'evaluate', ...args], {
+    // Start the analysis process - use direct node call for Vercel compatibility
+    const evaluateScript = path.join(__dirname, 'src', 'evaluate.js');
+    const child = spawn('node', [evaluateScript, ...args], {
       cwd: __dirname,
       stdio: 'pipe'
     });

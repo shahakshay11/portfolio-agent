@@ -2,9 +2,10 @@
   "name": "portfolio-agent",
   "version": "1.0.0",
   "description": "AI-powered design portfolio evaluation system",
-  "main": "src/index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node server.js",
+    "dev": "node server.js",
     "server": "node server.js",
     "test": "playwright test",
     "evaluate": "node src/evaluate.js",
@@ -28,9 +29,11 @@
     "yargs": "^17.7.2"
   },
   "devDependencies": {
+    "@tailwindcss/forms": "^0.5.10",
     "@types/node": "^20.0.0",
     "eslint": "^8.50.0",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "tailwindcss": "^4.1.11"
   },
   "keywords": [
     "design",
